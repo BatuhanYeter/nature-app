@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-showException(BuildContext context, {String message}){
+showException(BuildContext context, {String? message}){
   showDialog<void>(
     context: context,
     barrierDismissible: false, // user must tap button!
@@ -10,7 +10,7 @@ showException(BuildContext context, {String message}){
         content: SingleChildScrollView(
           child: ListBody(
             children: <Widget>[
-              Text(message),
+              Text(message!),
               // TODO: Display the error type to the user. Done.
             ],
           ),

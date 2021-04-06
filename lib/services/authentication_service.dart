@@ -7,12 +7,12 @@ import 'package:flutter_appp/widgets/exception.dart';
 class AuthenticationService {
   FirebaseAuth auth = FirebaseAuth.instance;
 
-  MyUser createMyUserObjectFromUser(User user) {
+  MyUser? createMyUserObjectFromUser(User? user) {
     return user != null ? MyUser(uid: user.uid) : null;
   }
 
   // Every time a user sign-in or out, it will give a response down the stream
-  Stream<MyUser> get pUser {
+  Stream<MyUser?> get pUser {
     return auth.userChanges().map(createMyUserObjectFromUser);
   }
 
@@ -20,7 +20,7 @@ class AuthenticationService {
   Future signInAnon(BuildContext context) async {
     try {
       UserCredential result = await auth.signInAnonymously();
-      User user = result.user;
+      User? user = result.user;
 
       return createMyUserObjectFromUser(user);
     } on FirebaseAuthException catch (e) {
@@ -29,12 +29,12 @@ class AuthenticationService {
   }
 
   // Sign-in with email and password
-  Future signIn(BuildContext context, {email, password}) async {
+  Future signIn(BuildContext context, {required email, required password}) async {
     try {
       // TODO: change it
       UserCredential result = await auth.signInWithEmailAndPassword(
           email: email, password: password);
-      User user = result.user;
+      User? user = result.user;
       if(user != null) {
         createMyUserObjectFromUser(user);
         // TODO: email verify check user.emailVerified
@@ -56,7 +56,7 @@ class AuthenticationService {
   }
 
   // Sign-up with email
-  Future signUp(BuildContext context, {email, password}) async {
+  Future signUp(BuildContext context, {required email, required password}) async {
     try {
       await auth.createUserWithEmailAndPassword(
           email: email, password: password).then((value) {
@@ -90,7 +90,7 @@ class AuthenticationService {
 
   Future emailVerification(BuildContext context) async {
     try {
-      User user = auth.currentUser;
+      User user = auth.currentUser!;
 
       if (!user.emailVerified) {
         await user.sendEmailVerification();

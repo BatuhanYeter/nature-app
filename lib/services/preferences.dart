@@ -2,7 +2,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 // TODO: Dynamic theme
 class UserPreferences {
-  static SharedPreferences _preferences;
+  static late SharedPreferences _preferences;
   // a
   static const _keyTheme = 'dark';
 
@@ -12,5 +12,5 @@ class UserPreferences {
   static Future setTheme(String theme) async =>
       await _preferences.setString(_keyTheme, theme);
 
-  static String getTheme() => _preferences.getString(_keyTheme);
+  static String? getTheme() => _preferences.getString(_keyTheme);
 }

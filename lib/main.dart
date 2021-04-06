@@ -25,8 +25,9 @@ Future<void> main() async {
   ));
 }
 
+
 class MyApp extends StatelessWidget {
-  const MyApp({Key key, this.theme}) : super(key: key);
+  const MyApp({Key? key, required this.theme}) : super(key: key);
   final String theme;
 
   @override
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
     // Providers
     return MultiProvider(
         providers: [
-          StreamProvider<MyUser>.value(
+          StreamProvider<MyUser?>.value(
             initialData: null,
             value: AuthenticationService().pUser,
           ),

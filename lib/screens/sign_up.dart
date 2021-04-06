@@ -123,7 +123,7 @@ class SignUp extends StatelessWidget {
                               ),
                             ),
                             onTap: () async {
-                              if (_formKey.currentState.validate() &&
+                              if (_formKey.currentState!.validate() &&
                                   passwordController.text.trim() ==
                                       passwordAgainController.text.trim()) {
                                 ScaffoldMessenger.of(context).showSnackBar(
