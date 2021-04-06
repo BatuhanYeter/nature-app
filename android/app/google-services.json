@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1041387268037",
+    "project_id": "naturecalls-4d42f",
+    "storage_bucket": "naturecalls-4d42f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1041387268037:android:ed8c2a740c3e1adb5e8dac",
+        "android_client_info": {
+          "package_name": "com.batuhan.flutter_appp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1041387268037-qt1l9ptrvlrs898sjd8200kdiuc34741.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2jX-cSjVQuprYeNdwbpY27mnMakDIr7M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1041387268037-qt1l9ptrvlrs898sjd8200kdiuc34741.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
