@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_appp/model/user.dart';
-import 'package:flutter_appp/screens/home.dart';
 import 'package:flutter_appp/widgets/exception.dart';
 
 class AuthenticationService {
@@ -62,7 +61,7 @@ class AuthenticationService {
           email: email, password: password).then((value) {
             if(value.user != null) {
               createMyUserObjectFromUser(value.user);
-              Navigator.pushNamed(context, '/home');
+              Navigator.pushNamed(context, '/firstScreenAR');
             } else {
               showException(context, message: "Something went wrong.");
             }

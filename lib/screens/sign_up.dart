@@ -3,7 +3,7 @@ import 'package:flutter_appp/constants.dart';
 import 'package:flutter_appp/services/authentication_service.dart';
 import 'package:flutter_appp/widgets/background.dart';
 import 'package:flutter_appp/widgets/input_fields.dart';
-import 'package:flutter_appp/widgets/rounded_button.dart';
+import 'package:flutter_appp/widgets/my_button.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class SignUp extends StatelessWidget {
@@ -57,7 +57,85 @@ class SignUp extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Padding(
+                          GestureDetector(
+                            onTap: () {},
+                            child: Container(
+                                width: size.width * 0.2,
+                                height: size.height * 0.08,
+                                decoration: BoxDecoration(
+                                  color: Colors.white70,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Icon(
+                                  FontAwesomeIcons.bars,
+                                  color: Colors.black,
+                                )),
+                          ),
+                          SizedBox(
+                            width: size.width * 0.01,
+                          ),
+                          MyButton(
+                            press: () async {
+                              if (_formKey.currentState!.validate() &&
+                                  passwordController.text.trim() ==
+                                      passwordAgainController.text.trim()) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text('Please wait')));
+                                auth.signUp(context,
+                                    email: emailController.text.trim(),
+                                    password: passwordController.text.trim());
+                              } else if (passwordController.text.trim() !=
+                                  passwordAgainController.text.trim()) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        content:
+                                            Text('Passwords do not match')));
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        content: Text('Something Went Wrong')));
+                              }
+                            },
+                            text: "Sign Up",
+                            icon: Icon(FontAwesomeIcons.arrowRight),
+                            height: size.height * 0.08,
+                            width: size.width * 0.6,
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: size.height * 0.01,
+                      ),
+                      GestureDetector(
+                        child: Container(
+                          decoration: BoxDecoration(
+                              border: Border(
+                                  bottom: BorderSide(
+                                      width: 1, color: Colors.white))),
+                          child: Text(
+                            "Already have an account?",
+                            style: bodyText,
+                          ),
+                        ),
+                        onTap: () => Navigator.pushNamed(context, '/login'),
+                      ),
+                      SizedBox(
+                        height: size.height * 0.02,
+                      )
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
+        )
+      ],
+    );
+  }
+}
+
+/*
+Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Container(
                               width: 50,
@@ -144,39 +222,7 @@ class SignUp extends StatelessWidget {
                               }
                             },
                           ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: size.height * 0.01,
-                      ),
-                      GestureDetector(
-                        child: Container(
-                          decoration: BoxDecoration(
-                              border: Border(
-                                  bottom: BorderSide(
-                                      width: 1, color: Colors.white))),
-                          child: Text(
-                            "Already have an account?",
-                            style: bodyText,
-                          ),
-                        ),
-                        onTap: () => Navigator.pushNamed(context, '/login'),
-                      ),
-                      SizedBox(
-                        height: size.height * 0.02,
-                      )
-                    ],
-                  ),
-                ),
-              )
-            ],
-          ),
-        )
-      ],
-    );
-  }
-}
-
+ */
 /*
 press: () async {
                             if (_formKey.currentState.validate() &&

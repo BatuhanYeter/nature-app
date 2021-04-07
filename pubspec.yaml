@@ -34,6 +34,14 @@ dependencies:
   font_awesome_flutter: ^9.0.0
   shared_preferences: ^2.0.5
   theme_provider: ^0.5.0
+  flutter_native_splash: ^1.1.7+1
+
+flutter_native_splash:
+  color: "#74c494"
+  #background_image: "assets/icons/nature.png"
+  # The image parameter allows you to specify an image used in the splash screen.  It must be a
+  # png file.
+  image: assets/icons/nature.png
 
 dev_dependencies:
   flutter_test:

@@ -3,7 +3,7 @@ import 'package:flutter_appp/constants.dart';
 import 'package:flutter_appp/services/authentication_service.dart';
 import 'package:flutter_appp/widgets/background.dart';
 import 'package:flutter_appp/widgets/input_fields.dart';
-import 'package:flutter_appp/widgets/rounded_button.dart';
+import 'package:flutter_appp/widgets/my_button.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class LoginPage extends StatelessWidget {
@@ -21,45 +21,106 @@ class LoginPage extends StatelessWidget {
         ),
         Scaffold(
           backgroundColor: Colors.transparent,
-          body: Column(mainAxisAlignment: MainAxisAlignment.end, children: <
-              Widget>[
-            Center(
-              child: Form(
-                child: Column(
-                  children: <Widget>[
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        TextInputField(
-                          inputController: emailController,
-                          icon: FontAwesomeIcons.envelope,
-                          hintText: "Email",
-                          textInputAction: TextInputAction.next,
-                          textInputType: TextInputType.emailAddress,
+          body: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                Center(
+                  child: Form(
+                    child: Column(
+                      children: <Widget>[
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            TextInputField(
+                              inputController: emailController,
+                              icon: FontAwesomeIcons.envelope,
+                              hintText: "Email",
+                              textInputAction: TextInputAction.next,
+                              textInputType: TextInputType.emailAddress,
+                            ),
+                            PasswordInputField(
+                                passwordController: passwordController,
+                                icon: FontAwesomeIcons.lock,
+                                hintText: "Password",
+                                textInputAction: TextInputAction.done,
+                                textInputType: TextInputType.name),
+                            GestureDetector(
+                              onTap: () => Navigator.pushNamed(
+                                  context, '/forgotPassword'),
+                              child: Text(
+                                'Forgot Password?',
+                                style: bodyText,
+                              ),
+                            ),
+                          ],
                         ),
-                        PasswordInputField(
-                            passwordController: passwordController,
-                            icon: FontAwesomeIcons.lock,
-                            hintText: "Password",
-                            textInputAction: TextInputAction.done,
-                            textInputType: TextInputType.name),
-                        GestureDetector(
-                          onTap: () =>
-                              Navigator.pushNamed(context, '/forgotPassword'),
-                          child: Text(
-                            'Forgot Password?',
-                            style: bodyText,
-                          ),
+                        SizedBox(
+                          height: size.height * 0.03,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            GestureDetector(
+                              onTap: () {},
+                              child: Container(
+                                  width: size.width * 0.2,
+                                  height: size.height * 0.08,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white70,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Icon(
+                                    FontAwesomeIcons.bars,
+                                    color: Colors.black,
+                                  )),
+                            ),
+                            SizedBox(
+                              width: size.width * 0.01,
+                            ),
+                            MyButton(
+                              press: () {
+                                auth.signIn(context,
+                                    email: emailController.text.trim(),
+                                    password: passwordController.text.trim());
+                              },
+                              text: "Login",
+                              icon: Icon(FontAwesomeIcons.arrowRight),
+                              height: size.height * 0.08,
+                              width: size.width * 0.6,
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: size.height * 0.01,
                         ),
                       ],
                     ),
-                    SizedBox(
-                      height: size.height * 0.03,
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () => {Navigator.pushNamed(context, "/signUp")},
+                  child: Container(
+                    child: Text(
+                      'Create an account',
+                      style: bodyText,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
+                    decoration: BoxDecoration(
+                        border: Border(
+                            bottom: BorderSide(width: 1, color: Colors.white))),
+                  ),
+                ),
+                SizedBox(
+                  height: size.height * 0.02,
+                )
+              ]),
+        )
+      ],
+    );
+  }
+}
+
+/*
+Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Container(
                             width: 50,
@@ -128,33 +189,4 @@ class LoginPage extends StatelessWidget {
                                 password: passwordController.text.trim());
                           },
                         ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: size.height * 0.01,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            GestureDetector(
-              onTap: () => {Navigator.pushNamed(context, "/signUp")},
-              child: Container(
-                child: Text(
-                  'Create an account',
-                  style: bodyText,
-                ),
-                decoration: BoxDecoration(
-                    border: Border(
-                        bottom: BorderSide(width: 1, color: Colors.white))),
-              ),
-            ),
-            SizedBox(
-              height: size.height * 0.02,
-            )
-          ]),
-        )
-      ],
-    );
-  }
-}
+ */

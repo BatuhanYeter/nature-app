@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_appp/constants.dart';
 import 'package:flutter_appp/widgets/background.dart';
 import 'package:flutter_appp/widgets/input_fields.dart';
-import 'package:flutter_appp/widgets/rounded_button.dart';
+import 'package:flutter_appp/widgets/my_button.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ForgotPassword extends StatelessWidget {
@@ -45,7 +45,7 @@ class ForgotPassword extends StatelessWidget {
                       width: size.width * 0.8,
                       child: Center(
                           child: Text(
-                        "Please enter your email adress and we will send a mail to change your password.",
+                        "Please enter your email address and we will send a mail to change your password.",
                         style: bodyText,
                       )),
                     ),
@@ -60,7 +60,15 @@ class ForgotPassword extends StatelessWidget {
                     SizedBox(
                       height: 10,
                     ),
-                    RoundedButton(icon: Icon(FontAwesomeIcons.arrowRight), press: () {}),
+                    MyButton(
+                      text: "Send",
+                      onPrimary: Colors.black,
+                      primary: Colors.white70,
+                      press: () async {},
+                      icon: Icon(FontAwesomeIcons.longArrowAltRight),
+                      height: size.height * 0.08,
+                      width: size.width * 0.8,
+                    )
                   ],
                 ),
               )

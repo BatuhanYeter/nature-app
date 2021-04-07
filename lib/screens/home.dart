@@ -26,7 +26,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-
+    // TODO: Theme icon needs to be added into the settings page
     theme = UserPreferences.getTheme() ?? "dark";
   }
 
@@ -36,19 +36,6 @@ class _HomePageState extends State<HomePage> {
     // final Preferences pref = Preferences();
     return Scaffold(
       appBar: AppBar(
-        actions: [
-          IconButton(
-            // TODO: Theme icon needs to be added into the settings page
-              icon: Icon(theme == "dark" ? Icons.brightness_4 : Icons.brightness_2),
-              onPressed: () async {
-                /*
-                if (theme == "dark")
-                  await UserPreferences.setTheme("light");
-                else
-                  await UserPreferences.setTheme("dark");
-              */
-              })
-        ],
         centerTitle: true,
         title: Text("Nature Calls"),
         leading: IconButton(
@@ -106,7 +93,7 @@ class _HomePageState extends State<HomePage> {
           ListTile(
             title: Text("Settings", style: TextStyle(fontSize: 20)),
             leading: Icon(FontAwesomeIcons.cog),
-            onTap: () {},
+            onTap: () => Navigator.pushNamed(context, "/settings"),
           ),
           ListTile(
             title: Text("Profile", style: TextStyle(fontSize: 20)),
@@ -128,3 +115,14 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+
+/*
+                IconButton(
+                icon: Icon(theme == "dark" ? Icons.brightness_4 : Icons.brightness_2),
+              onPressed: () async {
+                if (theme == "dark")
+                  await UserPreferences.setTheme("light");
+                else
+                  await UserPreferences.setTheme("dark");
+                  })
+              */
