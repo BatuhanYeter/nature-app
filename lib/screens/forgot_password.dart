@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_appp/constants.dart';
+import 'package:flutter_appp/services/authentication_service.dart';
 import 'package:flutter_appp/widgets/background.dart';
 import 'package:flutter_appp/widgets/input_fields.dart';
 import 'package:flutter_appp/widgets/my_button.dart';
@@ -10,6 +11,7 @@ class ForgotPassword extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AuthenticationService auth = AuthenticationService();
     Size size = MediaQuery.of(context).size;
     return Stack(
       children: <Widget>[
@@ -64,7 +66,9 @@ class ForgotPassword extends StatelessWidget {
                       text: "Send",
                       onPrimary: Colors.black,
                       primary: Colors.white70,
-                      press: () async {},
+                      press: () async {
+                        auth.resetPassword(context, email: emailController.text.trim());
+                      },
                       icon: Icon(FontAwesomeIcons.longArrowAltRight),
                       height: size.height * 0.08,
                       width: size.width * 0.8,

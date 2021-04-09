@@ -58,7 +58,9 @@ class SignUp extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              auth.signInWithGoogle(context);
+                            },
                             child: Container(
                                 width: size.width * 0.2,
                                 height: size.height * 0.08,
@@ -66,9 +68,8 @@ class SignUp extends StatelessWidget {
                                   color: Colors.white70,
                                   shape: BoxShape.circle,
                                 ),
-                                child: Icon(
-                                  FontAwesomeIcons.bars,
-                                  color: Colors.black,
+                                child: Image.asset(
+                                  'assets/icons/google.png',
                                 )),
                           ),
                           SizedBox(

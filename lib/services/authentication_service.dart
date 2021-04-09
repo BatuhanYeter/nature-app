@@ -1,18 +1,52 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_appp/model/user.dart';
 import 'package:flutter_appp/widgets/exception.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthenticationService {
   FirebaseAuth auth = FirebaseAuth.instance;
+  GoogleSignIn googleSignIn = GoogleSignIn();
+  CollectionReference users = FirebaseFirestore.instance.collection('users');
 
-  MyUser? createMyUserObjectFromUser(User? user) {
-    return user != null ? MyUser(uid: user.uid) : null;
-  }
+  Future signInWithGoogle(BuildContext context) async {
+    try {
+      final GoogleSignInAccount? googleSignInAccount =
+          await googleSignIn.signIn();
+      if (googleSignInAccount != null) {
+        final GoogleSignInAuthentication googleSignInAuthentication =
+            await googleSignInAccount.authentication;
+        final AuthCredential credential = GoogleAuthProvider.credential(
+            accessToken: googleSignInAuthentication.accessToken,
+            idToken: googleSignInAuthentication.idToken);
 
-  // Every time a user sign-in or out, it will give a response down the stream
-  Stream<MyUser?> get pUser {
-    return auth.userChanges().map(createMyUserObjectFromUser);
+        final UserCredential authResult =
+            await auth.signInWithCredential(credential);
+
+        final User? user = authResult.user;
+
+        var userData = {
+          'name': googleSignInAccount.displayName,
+          'provider': 'google',
+          'photoUrl': googleSignInAccount.photoUrl,
+          'email': googleSignInAccount.email,
+        };
+
+        users.doc(user!.uid).get().then((doc) {
+          if (doc.exists) {
+            // old user
+            doc.reference.update(userData);
+            Navigator.pushNamed(context, '/home');
+          } else {
+            // new user
+            users.doc(user.uid).set(userData);
+            Navigator.pushNamed(context, '/home');
+          }
+        });
+      }
+    } catch (e) {
+      print("Sign in is not successful" + e.toString());
+    }
   }
 
   // Sign-in anonymously
@@ -21,21 +55,21 @@ class AuthenticationService {
       UserCredential result = await auth.signInAnonymously();
       User? user = result.user;
 
-      return createMyUserObjectFromUser(user);
+      if (user != null) Navigator.pushNamed(context, '/home');
     } on FirebaseAuthException catch (e) {
-      return null;
+      print(e.toString());
     }
   }
 
   // Sign-in with email and password
-  Future signIn(BuildContext context, {required email, required password}) async {
+  Future signIn(BuildContext context,
+      {required email, required password}) async {
     try {
       // TODO: change it
       UserCredential result = await auth.signInWithEmailAndPassword(
           email: email, password: password);
       User? user = result.user;
-      if(user != null) {
-        createMyUserObjectFromUser(user);
+      if (user != null) {
         // TODO: email verify check user.emailVerified
         Navigator.pushNamed(context, '/home');
       } else {
@@ -48,27 +82,30 @@ class AuthenticationService {
         showException(context, message: "No user found for that email.");
         print('No user found for that email.');
       } else if (e.code == 'wrong-password') {
-        showException(context, message: "Wrong password provided for that user.");
+        showException(context,
+            message: "Wrong password provided for that user.");
         print('Wrong password provided for that user.');
       }
     }
   }
 
   // Sign-up with email
-  Future signUp(BuildContext context, {required email, required password}) async {
+  Future signUp(BuildContext context,
+      {required email, required password}) async {
     try {
-      await auth.createUserWithEmailAndPassword(
-          email: email, password: password).then((value) {
-            if(value.user != null) {
-              createMyUserObjectFromUser(value.user);
-              Navigator.pushNamed(context, '/firstScreenAR');
-            } else {
-              showException(context, message: "Something went wrong.");
-            }
+      await auth
+          .createUserWithEmailAndPassword(email: email, password: password)
+          .then((value) {
+        if (value.user != null) {
+          Navigator.pushNamed(context, '/firstScreenAR');
+        } else {
+          showException(context, message: "Something went wrong.");
+        }
       });
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
-        showException(context, message: "The account already exists for that email.");
+        showException(context,
+            message: "The account already exists for that email.");
         print('The account already exists for that email.');
         return null;
       }
@@ -81,9 +118,11 @@ class AuthenticationService {
   // Sign-out
   Future signOut(BuildContext context) async {
     try {
-      return await auth.signOut().then((value) => Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false));
+      return await auth.signOut().then((value) =>
+          Navigator.pushNamedAndRemoveUntil(
+              context, '/login', (route) => false));
     } catch (e) {
-      return null;
+      print(e.toString());
     }
   }
 
@@ -95,7 +134,17 @@ class AuthenticationService {
         await user.sendEmailVerification();
       }
     } catch (e) {
-      return null;
+      print(e.toString());
+    }
+  }
+
+  Future resetPassword(BuildContext context, {required String email}) async {
+    try {
+      await auth.sendPasswordResetEmail(email: email).then((value) =>
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text('An email has been sent.'))));
+    } catch (e) {
+      print(e.toString());
     }
   }
 }

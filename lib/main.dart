@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_appp/model/user.dart';
 import 'package:flutter_appp/screens/after_register/first_screen_ar.dart';
 import 'package:flutter_appp/screens/after_register/second_screen_ar.dart';
 import 'package:flutter_appp/screens/after_register/third_screen_ar.dart';
@@ -29,7 +28,6 @@ Future<void> main() async {
   ));
 }
 
-
 class MyApp extends StatelessWidget {
   const MyApp({Key? key, required this.theme}) : super(key: key);
   final String theme;
@@ -39,9 +37,13 @@ class MyApp extends StatelessWidget {
     // Providers
     return MultiProvider(
         providers: [
-          StreamProvider<MyUser?>.value(
+          Provider<AuthenticationService>(
+            create: (_) => AuthenticationService(),
+          ),
+          StreamProvider(
+            create: (context) =>
+                context.read<AuthenticationService>().auth.authStateChanges(),
             initialData: null,
-            value: AuthenticationService().pUser,
           ),
         ],
         child: MaterialApp(
@@ -61,8 +63,6 @@ class MyApp extends StatelessWidget {
             '/firstScreenAR': (context) => FirstScreenAR(),
             '/secondScreenAR': (context) => SecondScreenAR(),
             '/thirdScreenAR': (context) => ThirdScreenAR(),
-
-
           },
         ));
   }
