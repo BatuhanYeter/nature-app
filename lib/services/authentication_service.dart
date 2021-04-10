@@ -70,7 +70,6 @@ class AuthenticationService {
           email: email, password: password);
       User? user = result.user;
       if (user != null) {
-        print("User here");
         // TODO: email verify check user.emailVerified
         Navigator.pushNamed(context, '/home');
       } else {
