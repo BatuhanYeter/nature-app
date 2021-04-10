@@ -8,7 +8,9 @@ class MyButton extends StatelessWidget {
     this.onPrimary = Colors.black,
     required this.press,
     this.text = "",
-    required this.icon, required this.width, required this.height,
+    required this.icon,
+    required this.width,
+    required this.height,
   }) : super(key: key);
   final Color primary;
   final Color onPrimary;
@@ -16,6 +18,7 @@ class MyButton extends StatelessWidget {
   final String text;
   final Icon icon;
   final double width, height;
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;

@@ -9,9 +9,9 @@ class Wrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     final user = context.watch<User?>();
     if (user != null) {
-      return HomePage();
-    } else {
       return LoginPage();
+    } else {
+      return HomePage();
     }
   }
 }

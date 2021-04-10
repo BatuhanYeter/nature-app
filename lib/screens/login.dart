@@ -80,7 +80,7 @@ class LoginPage extends StatelessWidget {
                               width: size.width * 0.01,
                             ),
                             MyButton(
-                              press: () {
+                              press: () async {
                                 auth.signIn(context,
                                     email: emailController.text.trim(),
                                     password: passwordController.text.trim());
