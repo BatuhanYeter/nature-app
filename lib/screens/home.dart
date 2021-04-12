@@ -98,7 +98,7 @@ class _HomePageState extends State<HomePage> {
           ListTile(
             title: Text("Profile", style: TextStyle(fontSize: 20)),
             leading: Icon(FontAwesomeIcons.userEdit),
-            onTap: () {},
+            onTap: () => Navigator.pushNamed(context, "/profile"),
           ),
           ListTile(
             title: Text("Messages", style: TextStyle(fontSize: 20)),

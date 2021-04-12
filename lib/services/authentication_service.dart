@@ -55,7 +55,25 @@ class AuthenticationService {
       UserCredential result = await auth.signInAnonymously();
       User? user = result.user;
 
-      if (user != null) Navigator.pushNamed(context, '/home');
+      if (user != null) {
+        var userData = {
+          'name': user.displayName,
+          'provider': 'google',
+          'isAnonymous': user.isAnonymous
+        };
+
+        users.doc(user.uid).get().then((doc) {
+          if (doc.exists) {
+            // old user
+            doc.reference.update(userData);
+            Navigator.pushNamed(context, '/firstScreenAR');
+          } else {
+            // new user
+            users.doc(user.uid).set(userData);
+            Navigator.pushNamed(context, '/firstScreenAR');
+          }
+        });
+      };
     } on FirebaseAuthException catch (e) {
       print(e.toString());
     }
@@ -97,7 +115,29 @@ class AuthenticationService {
           .createUserWithEmailAndPassword(email: email, password: password)
           .then((value) {
         if (value.user != null) {
-          Navigator.pushNamed(context, '/firstScreenAR');
+          var userData = {
+            'name': value.user!.displayName,
+            'provider': 'google',
+            'email': value.user!.email,
+            'emailVerified': value.user!.emailVerified,
+            'photoUrl': value.user!.photoURL,
+            'isAnonymous': value.user!.isAnonymous
+          };
+
+          users.doc(value.user!.uid).get().then((doc) {
+            if (doc.exists) {
+              // old user
+              doc.reference.update(userData);
+              print(value.user!.email);
+              Navigator.pushNamed(context, '/firstScreenAR');
+            } else {
+              // new user
+              print(value.user!.email);
+              users.doc(value.user!.uid).set(userData);
+              Navigator.pushNamed(context, '/firstScreenAR');
+            }
+          });
+
         } else {
           showException(context, message: "Something went wrong.");
         }
