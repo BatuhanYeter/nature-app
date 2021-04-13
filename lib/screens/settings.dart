@@ -44,11 +44,15 @@ class _SettingsState extends State<Settings> {
             ),
             SizedBox(height: size.height * 0.02,),
             // TODO: set/get the info
-            AccountRow(text: "Change Password", press: () {},),
+            AccountRow(text: "Change Name", press: () {
+
+            },),
             SizedBox(height: size.height * 0.02,),
-            AccountRow(text: "Change Password", press: () {},),
+            AccountRow(text: "Change Email", press: () {
+              print("This one works");
+            },),
             SizedBox(height: size.height * 0.02,),
-            AccountRow(text: "Change Password", press: () {},),
+            AccountRow(text: "Change Location", press: () {},),
             SizedBox(height: size.height * 0.02,),
             AccountRow(text: "Change Password", press: () {},),
             SizedBox(height: size.height * 0.04,),
