@@ -73,7 +73,7 @@ class AuthenticationService {
             Navigator.pushNamed(context, '/firstScreenAR');
           }
         });
-      };
+      }
     } on FirebaseAuthException catch (e) {
       print(e.toString());
     }

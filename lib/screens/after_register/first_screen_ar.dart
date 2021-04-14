@@ -11,7 +11,7 @@ class _FirstScreenARState extends State<FirstScreenAR> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    bool _giveVerse = false;
+
     return Container(
       color: Colors.teal[800],
       child: Center(
