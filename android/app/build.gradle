@@ -35,7 +35,12 @@ dependencies {
 
 android {
     compileSdkVersion 30
+    compileOptions {
 
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+
+    }
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.batuhan.flutter_appp"

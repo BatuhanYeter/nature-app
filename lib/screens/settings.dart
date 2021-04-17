@@ -1,4 +1,8 @@
+import 'dart:math';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_appp/services/authentication_service.dart';
 import 'package:flutter_appp/widgets/accounts_row.dart';
 import 'package:flutter_appp/widgets/notification_row.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -9,6 +13,9 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
+  AuthenticationService auth = AuthenticationService();
+  TextEditingController emailController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -34,46 +41,89 @@ class _SettingsState extends State<Settings> {
             Row(
               children: [
                 Icon(FontAwesomeIcons.user),
-                SizedBox(width: size.width * 0.02,),
-                Text("Account", style: TextStyle(fontSize: 18),),
+                SizedBox(
+                  width: size.width * 0.02,
+                ),
+                Text(
+                  "Account",
+                  style: TextStyle(fontSize: 18),
+                ),
               ],
             ),
             Divider(
               height: size.height * 0.03,
               thickness: size.width * 0.01,
             ),
-            SizedBox(height: size.height * 0.02,),
-            // TODO: set/get the info
-            AccountRow(text: "Change Name", press: () {
-
-            },),
-            SizedBox(height: size.height * 0.02,),
-            AccountRow(text: "Change Email", press: () {
-              print("This one works");
-            },),
-            SizedBox(height: size.height * 0.02,),
-            AccountRow(text: "Change Location", press: () {},),
-            SizedBox(height: size.height * 0.02,),
-            AccountRow(text: "Change Password", press: () {},),
-            SizedBox(height: size.height * 0.04,),
+            SizedBox(
+              height: size.height * 0.02,
+            ),
+            AccountRow(
+              text: "Change Name",
+              press: () {
+                Navigator.pushNamed(context, '/profile');
+              },
+            ),
+            SizedBox(
+              height: size.height * 0.02,
+            ),
+            AccountRow(
+              text: "Change Email",
+              press: () {
+                Navigator.pushNamed(context, '/profile');
+              },
+            ),
+            SizedBox(
+              height: size.height * 0.02,
+            ),
+            AccountRow(
+              text: "Change Location",
+              press: () {
+                Navigator.pushNamed(context, '/profile');
+              },
+            ),
+            SizedBox(
+              height: size.height * 0.02,
+            ),
+            AccountRow(
+              text: "Reset Password",
+              press: () {
+                Navigator.pushNamed(context, '/forgotPassword');
+              },
+            ),
+            SizedBox(
+              height: size.height * 0.04,
+            ),
             Row(
               children: [
                 Icon(FontAwesomeIcons.bell),
-                SizedBox(width: size.width * 0.02,),
-                Text("Notifications", style: TextStyle(fontSize: 18),),
+                SizedBox(
+                  width: size.width * 0.02,
+                ),
+                Text(
+                  "Notifications",
+                  style: TextStyle(fontSize: 18),
+                ),
               ],
             ),
             Divider(
               height: size.height * 0.03,
               thickness: size.width * 0.01,
             ),
-            SizedBox(height: size.height * 0.01,),
+            SizedBox(
+              height: size.height * 0.01,
+            ),
             NotificationRow(text: "Email", isActive: true),
-            SizedBox(height: size.height * 0.01,),
+            SizedBox(
+              height: size.height * 0.01,
+            ),
             NotificationRow(text: "Phone", isActive: false),
-            SizedBox(height: size.height * 0.01,),
+            SizedBox(
+              height: size.height * 0.01,
+            ),
             NotificationRow(text: "Email", isActive: true),
-            SizedBox(height: size.height * 0.01,),
+            SizedBox(
+              height: size.height * 0.01,
+            ),
           ],
         ),
       ),

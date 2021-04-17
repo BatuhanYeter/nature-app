@@ -24,7 +24,6 @@ dependencies:
   flutter:
     sdk: flutter
 
-
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
@@ -38,7 +37,8 @@ dependencies:
   theme_provider: ^0.5.0
   flutter_native_splash: ^1.1.7+1
   intl: ^0.17.0
-
+  google_maps_flutter: ^2.0.3
+  location: ^4.1.1
 flutter_native_splash:
   color: "#74c494"
   #background_image: "assets/icons/nature.png"

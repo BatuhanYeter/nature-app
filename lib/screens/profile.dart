@@ -21,7 +21,6 @@ class _ProfileState extends State<Profile> {
   String photoUrl = '';
   String location = '';
 
-  // TODO: This will lead to settings page to update user data
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -41,41 +40,40 @@ class _ProfileState extends State<Profile> {
       body: StreamBuilder<DocumentSnapshot>(
         stream: users.doc(FirebaseAuth.instance.currentUser!.uid).snapshots(),
         builder:
-            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+            (BuildContext context, AsyncSnapshot<DocumentSnapshot?> snapshot) {
           if (snapshot.hasError) {
             return Text("Something went wrong");
           }
+          else if  (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
 
-/*
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          } */
-
-
-          return Container(
-            padding: EdgeInsets.only(
-                left: size.width * 0.06,
-                right: size.width * 0.06,
-                top: size.height * 0.03),
-            child: ListView(
-              children: [
-                Text(
-                  "Profile",
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-                Center(
-                  child: Stack(
-                    children: [
-                      Container(
-                        width: size.width * 0.25,
+          }
+            else {
+            return Container(
+              padding: EdgeInsets.only(
+                  left: size.width * 0.06,
+                  right: size.width * 0.06,
+                  top: size.height * 0.03),
+              child: ListView(
+                children: [
+                  Text(
+                    "Edit Profile",
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
+                  Center(
+                    child: Stack(
+                        children: [
+                    Container(
+                    width: size.width * 0.25,
                         height: size.height * 0.2,
                         decoration: BoxDecoration(
-                            border: Border.all(
+                            border: Border.all
+                            (
                                 width: 4,
                                 color:
-                                Theme.of(context).scaffoldBackgroundColor),
+                                    Theme.of(context).scaffoldBackgroundColor),
                             image: DecorationImage(
                                 image: AssetImage('assets/images/bg.jpg'),
                                 fit: BoxFit.cover),
@@ -105,27 +103,19 @@ class _ProfileState extends State<Profile> {
                     ],
                   ),
                 ),
-
-                // TODO: Get/set the name from/to dbase
-                buildTextField("Name", snapshot.data!.get('name'), false,
-                    nameController, name),
+                buildTextField(
+                    "Name", snapshot.data?.get('name'), nameController, name),
                 SizedBox(
                   height: size.height * 0.02,
                 ),
-                // TODO: Get/set the email from/to dbase
-                buildTextField("Email", snapshot.data!.get('email'), false,
+                buildTextField("Email", snapshot.data?.get('email'),
                     emailController, email),
                 SizedBox(
                   height: size.height * 0.02,
                 ),
-                // TODO: Get/set the password from/to dbase
-                /* buildTextField("Password", "********", true),
-              SizedBox(
-                height: size.height * 0.02,
-              ),*/
                 // TODO: Get/set the location from/to dbase
-                buildTextField("Location", "Alaska, U.S.", false,
-                    locationController, location),
+                buildTextField(
+                    "Location", "Alaska, U.S.", locationController, location),
                 SizedBox(
                   height: size.height * 0.04,
                 ),
@@ -155,12 +145,16 @@ class _ProfileState extends State<Profile> {
                         users
                             .doc(FirebaseAuth.instance.currentUser!.uid)
                             .update({
-                          'name': nameController.text.trim() == '' ? snapshot.data!.get('name') : nameController.text.trim(),
-                          'email': emailController.text.trim() == '' ? snapshot.data!.get('email') : emailController.text.trim()
-                        })
+                              'name': nameController.text.trim() == ''
+                                  ? snapshot.data!.get('name')
+                                  : nameController.text.trim(),
+                              'email': emailController.text.trim() == ''
+                                  ? snapshot.data!.get('email')
+                                  : emailController.text.trim()
+                            })
                             .then((value) => print("User Updated"))
                             .catchError((error) =>
-                            print("Failed to update user: $error"));
+                                print("Failed to update user: $error"));
                       },
                       child: Text(
                         "Save",
@@ -171,13 +165,13 @@ class _ProfileState extends State<Profile> {
                 )
               ],
             ),
-          );
+          );}
         },
       ),
     );
   }
 
-  TextField buildTextField(String labelText, String hintText, bool isPassword,
+  TextField buildTextField(String labelText, String hintText,
       TextEditingController controller, String aimText) {
     return TextField(
       onChanged: (_val) {

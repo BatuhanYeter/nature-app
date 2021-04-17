@@ -96,6 +96,11 @@ class _HomePageState extends State<HomePage> {
             onTap: () => Navigator.pushNamed(context, "/settings"),
           ),
           ListTile(
+            title: Text("Maps", style: TextStyle(fontSize: 20)),
+            leading: Icon(FontAwesomeIcons.map),
+            onTap: () => Navigator.pushNamed(context, "/maps"),
+          ),
+          ListTile(
             title: Text("Profile", style: TextStyle(fontSize: 20)),
             leading: Icon(FontAwesomeIcons.userEdit),
             onTap: () => Navigator.pushNamed(context, "/profile"),

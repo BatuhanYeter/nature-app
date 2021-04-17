@@ -6,6 +6,7 @@ import 'package:flutter_appp/screens/after_register/third_screen_ar.dart';
 import 'package:flutter_appp/screens/forgot_password.dart';
 import 'package:flutter_appp/screens/home.dart';
 import 'package:flutter_appp/screens/login.dart';
+import 'package:flutter_appp/screens/maps.dart';
 import 'package:flutter_appp/screens/profile.dart';
 import 'package:flutter_appp/screens/settings.dart';
 import 'package:flutter_appp/screens/sign_up.dart';
@@ -64,6 +65,7 @@ class MyApp extends StatelessWidget {
             '/firstScreenAR': (context) => FirstScreenAR(),
             '/secondScreenAR': (context) => SecondScreenAR(),
             '/thirdScreenAR': (context) => ThirdScreenAR(),
+            '/maps': (context) => MyMap(),
           },
         ));
   }
