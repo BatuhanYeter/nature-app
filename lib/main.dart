@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_appp/provider/location_provider.dart';
 import 'package:flutter_appp/screens/after_register/first_screen_ar.dart';
 import 'package:flutter_appp/screens/after_register/second_screen_ar.dart';
 import 'package:flutter_appp/screens/after_register/third_screen_ar.dart';
@@ -46,6 +47,7 @@ class MyApp extends StatelessWidget {
                 context.read<AuthenticationService>().auth.authStateChanges(),
             initialData: null,
           ),
+          ChangeNotifierProvider(create: (context) => LocationProvider(), child: MyMap(),),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
