@@ -11,6 +11,9 @@ class UserMap extends StatefulWidget {
 
 class _UserMapState extends State<UserMap> {
   double _radius = 0;
+  final Future<String> _calculation = Future<String>.delayed(
+    const Duration(seconds: 2),
+  );
   @override
   Widget build(BuildContext context) {
     return Scaffold(
