@@ -39,6 +39,9 @@ dependencies:
   intl: ^0.17.0
   google_maps_flutter: ^2.0.3
   location: ^4.1.1
+  geolocator: ^7.0.3
+  http: ^0.13.1
+
 flutter_native_splash:
   color: "#74c494"
   #background_image: "assets/icons/nature.png"

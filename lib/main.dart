@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_appp/blocs/application_bloc.dart';
 import 'package:flutter_appp/provider/location_provider.dart';
 import 'package:flutter_appp/screens/after_register/first_screen_ar.dart';
 import 'package:flutter_appp/screens/after_register/second_screen_ar.dart';
@@ -8,6 +9,7 @@ import 'package:flutter_appp/screens/forgot_password.dart';
 import 'package:flutter_appp/screens/home.dart';
 import 'package:flutter_appp/screens/login.dart';
 import 'package:flutter_appp/screens/maps.dart';
+import 'package:flutter_appp/screens/user_map.dart';
 import 'package:flutter_appp/screens/profile.dart';
 import 'package:flutter_appp/screens/settings.dart';
 import 'package:flutter_appp/screens/sign_up.dart';
@@ -44,10 +46,15 @@ class MyApp extends StatelessWidget {
           ),
           StreamProvider(
             create: (context) =>
-                context.read<AuthenticationService>().auth.authStateChanges(),
+                context
+                    .read<AuthenticationService>()
+                    .auth
+                    .authStateChanges(),
             initialData: null,
           ),
-          ChangeNotifierProvider(create: (context) => LocationProvider(), child: MyMap(),),
+          ChangeNotifierProvider(
+            create: (context) => LocationProvider(), child: MyMap(),),
+          ChangeNotifierProvider(create: (context) => ApplicationBloc(), child: UserMap(),)
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
@@ -67,7 +74,7 @@ class MyApp extends StatelessWidget {
             '/firstScreenAR': (context) => FirstScreenAR(),
             '/secondScreenAR': (context) => SecondScreenAR(),
             '/thirdScreenAR': (context) => ThirdScreenAR(),
-            '/maps': (context) => MyMap(),
+            '/maps': (context) => UserMap(),
           },
         ));
   }

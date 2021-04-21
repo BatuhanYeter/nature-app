@@ -34,9 +34,15 @@ class _MyMapState extends State<MyMap> {
   Widget googleMapUI() {
     return Consumer<LocationProvider>(builder: (consumerContext, model, child) {
       if (model.locationPosition != null) {
-        return Column(
+        return ListView(
           children: [
-            Expanded(
+            TextField(
+              decoration: InputDecoration(
+                hintText: "Search Location"
+              ),
+            ),
+            Container(
+              height: MediaQuery.of(context).size.height * 0.55,
               child: GoogleMap(
                 initialCameraPosition:
                     CameraPosition(target: model.locationPosition, zoom: 18),
