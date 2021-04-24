@@ -11,9 +11,18 @@ class ApplicationBloc with ChangeNotifier {
   late Position currentLocation;
   List<PlaceSearch> searchResults = [];
 
+  Future getCurrentLocation() async {
+    return currentLocation;
+  }
   ApplicationBloc() {
+    setLastKnownLocation();
     setCurrentLocation();
   }
+  setLastKnownLocation() async {
+    currentLocation = await geoLocatorService.getCurrentLocation();
+    notifyListeners();
+  }
+
   // current location
   setCurrentLocation() async {
     currentLocation = await geoLocatorService.getCurrentLocation();

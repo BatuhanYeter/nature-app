@@ -10,12 +10,11 @@ class UserMap extends StatefulWidget {
 }
 
 class _UserMapState extends State<UserMap> {
-  double _radius = 0;
-  final Future<String> _calculation = Future<String>.delayed(
-    const Duration(seconds: 2),
-  );
+  double _radius = 500;
+
   @override
   Widget build(BuildContext context) {
+    final applicationBloc = Provider.of<ApplicationBloc>(context);
     return Scaffold(
         appBar: AppBar(
           leading: IconButton(
@@ -23,7 +22,52 @@ class _UserMapState extends State<UserMap> {
             onPressed: () => Navigator.pop(context),
           ),
         ),
-        body: googleMapUI());
+        body: FutureBuilder(
+          future: applicationBloc.getCurrentLocation(),
+          builder: (context, snapshot) {
+            List<Widget> children;
+            if (snapshot.hasData) {
+              return googleMapUI();
+            } else if (snapshot.hasError) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      child: CircularProgressIndicator(),
+                      width: 60,
+                      height: 60,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 16),
+                      child: Text('Awaiting result...'),
+                    )
+                  ],
+                ),
+              );
+            } else {
+              children = const <Widget>[
+                SizedBox(
+                  child: CircularProgressIndicator(),
+                  width: 60,
+                  height: 60,
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 16),
+                  child: Text('Awaiting result...'),
+                )
+              ];
+            }
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: children,
+              ),
+            );
+          },
+        ),
+       );
   }
 
   Widget googleMapUI() {
@@ -65,6 +109,7 @@ class _UserMapState extends State<UserMap> {
                     color: Colors.black.withOpacity(.6),
                     backgroundBlendMode: BlendMode.darken),
               ),
+            if (applicationBloc.searchResults.length != 0)
               Container(
               height: size.height * 0.55,
               width: double.infinity,
