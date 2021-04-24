@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_appp/blocs/application_bloc.dart';
+import 'package:flutter_appp/models/place_details.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
@@ -11,10 +14,30 @@ class UserMap extends StatefulWidget {
 
 class _UserMapState extends State<UserMap> {
   double _radius = 500;
+  Completer<GoogleMapController> _mapController = Completer();
+  late StreamSubscription locationSub;
 
+
+  @override
+  void initState() {
+    final applicationBloc = Provider.of<ApplicationBloc>(context, listen: false);
+
+    locationSub = applicationBloc.selectedLocation.stream.listen((place) {
+      _goToPlace(place);
+    });
+    super.initState();
+  }
+  @override
+  void dispose() {
+    final applicationBloc = Provider.of<ApplicationBloc>(context, listen: false);
+    applicationBloc.dispose();
+    locationSub.cancel();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     final applicationBloc = Provider.of<ApplicationBloc>(context);
+
     return Scaffold(
         appBar: AppBar(
           leading: IconButton(
@@ -97,7 +120,9 @@ class _UserMapState extends State<UserMap> {
                     zoom: 18),
                 myLocationEnabled: true,
                 myLocationButtonEnabled: true,
-                onMapCreated: (GoogleMapController controller) {},
+                onMapCreated: (GoogleMapController controller) {
+                  _mapController.complete(controller);
+                },
                 mapType: MapType.normal,
               ),
             ),
@@ -117,6 +142,11 @@ class _UserMapState extends State<UserMap> {
                 itemCount: applicationBloc.searchResults.length,
                 itemBuilder: (context, index) {
                   return ListTile(
+                    onTap: () {
+                      applicationBloc.setSelectedLocation(
+                        applicationBloc.searchResults[index].placeId
+                      );
+                    },
                     title: Text(
                       applicationBloc.searchResults[index].description,
                     ),
@@ -131,10 +161,10 @@ class _UserMapState extends State<UserMap> {
         Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Text("Search distance", style: TextStyle(fontSize: 24),),
+            Text("Radius $_radius m", style: TextStyle(fontSize: 24),),
             Slider(
               value: _radius,
-              min: 0,
+              min: 500,
               max: 5000,
               divisions: 100,
               label: _radius.round().toString(),
@@ -147,6 +177,15 @@ class _UserMapState extends State<UserMap> {
           ],
         )
       ],
+    );
+  }
+
+  Future<void> _goToPlace(Place place) async {
+    final GoogleMapController controller = await _mapController.future;
+    controller.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(target: LatLng(place.geometry.location.lat, place.geometry.location.lng), zoom: 14.0)
+      )
     );
   }
 }
