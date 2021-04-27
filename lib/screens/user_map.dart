@@ -16,81 +16,89 @@ class _UserMapState extends State<UserMap> {
   double _radius = 500;
   Completer<GoogleMapController> _mapController = Completer();
   late StreamSubscription locationSub;
-
-
+  late StreamSubscription boundsSub;
   @override
   void initState() {
-    final applicationBloc = Provider.of<ApplicationBloc>(context, listen: false);
+    final applicationBloc =
+        Provider.of<ApplicationBloc>(context, listen: false);
 
     locationSub = applicationBloc.selectedLocation.stream.listen((place) {
       _goToPlace(place);
     });
+    boundsSub = applicationBloc.bounds.stream.listen((bounds) async {
+      final GoogleMapController controller = await _mapController.future;
+      controller.animateCamera(CameraUpdate.newLatLngBounds(bounds, 50.0));
+    });
     super.initState();
   }
+
   @override
   void dispose() {
-    final applicationBloc = Provider.of<ApplicationBloc>(context, listen: false);
+    final applicationBloc =
+        Provider.of<ApplicationBloc>(context, listen: false);
     applicationBloc.dispose();
     locationSub.cancel();
+    boundsSub.cancel();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     final applicationBloc = Provider.of<ApplicationBloc>(context);
 
     return Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            icon: Icon(FontAwesomeIcons.arrowLeft),
-            onPressed: () => Navigator.pop(context),
-          ),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(FontAwesomeIcons.arrowLeft),
+          onPressed: () => Navigator.pop(context),
         ),
-        body: FutureBuilder(
-          future: applicationBloc.getCurrentLocation(),
-          builder: (context, snapshot) {
-            List<Widget> children;
-            if (snapshot.hasData) {
-              return googleMapUI();
-            } else if (snapshot.hasError) {
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      child: CircularProgressIndicator(),
-                      width: 60,
-                      height: 60,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 16),
-                      child: Text('Awaiting result...'),
-                    )
-                  ],
-                ),
-              );
-            } else {
-              children = const <Widget>[
-                SizedBox(
-                  child: CircularProgressIndicator(),
-                  width: 60,
-                  height: 60,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 16),
-                  child: Text('Awaiting result...'),
-                )
-              ];
-            }
+      ),
+      body: FutureBuilder(
+        future: applicationBloc.getCurrentLocation(),
+        builder: (context, snapshot) {
+          List<Widget> children;
+          if (snapshot.hasData) {
+            return googleMapUI();
+          } else if (snapshot.hasError) {
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: children,
+                children: [
+                  SizedBox(
+                    child: CircularProgressIndicator(),
+                    width: 60,
+                    height: 60,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 16),
+                    child: Text('Awaiting result...'),
+                  )
+                ],
               ),
             );
-          },
-        ),
-       );
+          } else {
+            children = const <Widget>[
+              SizedBox(
+                child: CircularProgressIndicator(),
+                width: 60,
+                height: 60,
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 16),
+                child: Text('Awaiting result...'),
+              )
+            ];
+          }
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: children,
+            ),
+          );
+        },
+      ),
+    );
   }
 
   Widget googleMapUI() {
@@ -124,6 +132,7 @@ class _UserMapState extends State<UserMap> {
                   _mapController.complete(controller);
                 },
                 mapType: MapType.normal,
+                markers: Set<Marker>.of(applicationBloc.markers),
               ),
             ),
             if (applicationBloc.searchResults.length != 0)
@@ -136,32 +145,81 @@ class _UserMapState extends State<UserMap> {
               ),
             if (applicationBloc.searchResults.length != 0)
               Container(
-              height: size.height * 0.55,
-              width: double.infinity,
-              child: ListView.builder(
-                itemCount: applicationBloc.searchResults.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    onTap: () {
-                      applicationBloc.setSelectedLocation(
-                        applicationBloc.searchResults[index].placeId
-                      );
-                    },
-                    title: Text(
-                      applicationBloc.searchResults[index].description,
-                    ),
-                  );
-                },
+                height: size.height * 0.55,
+                width: double.infinity,
+                child: ListView.builder(
+                  itemCount: applicationBloc.searchResults.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      onTap: () {
+                        applicationBloc.setSelectedLocation(
+                            applicationBloc.searchResults[index].placeId);
+                      },
+                      title: Text(
+                        applicationBloc.searchResults[index].description,
+                      ),
+                    );
+                  },
+                ),
               ),
-            ),
           ],
         ),
-        SizedBox(height: size.height * 0.02),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text("Filter", style: TextStyle(fontSize: size.width * 0.06, fontWeight: FontWeight.bold),),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Wrap(
+            spacing: size.width * 0.02,
+            children: [
+              FilterChip(
+                label: Text('Nature Park'),
+                onSelected: (val) =>
+                    applicationBloc.setPlaceType('nature_park', val, _radius),
+                selected: applicationBloc.placeType == 'nature_park',
 
+              ),
+              FilterChip(
+                label: Text('Camping'),
+                onSelected: (val) =>
+                    applicationBloc.setPlaceType('camping', val, _radius),
+                selected: applicationBloc.placeType == 'camping',
+
+              ),
+              FilterChip(
+                label: Text('Mountain'),
+                onSelected: (val) =>
+                    applicationBloc.setPlaceType('mountain+hill', val, _radius),
+                selected: applicationBloc.placeType == 'mountain+hill',
+
+              ),
+              FilterChip(
+                label: Text('Picnic'),
+                onSelected: (val) =>
+                    applicationBloc.setPlaceType('picnic', val, _radius),
+                selected: applicationBloc.placeType == 'picnic',
+
+              ),
+              FilterChip(
+                label: Text('Hiking'),
+                onSelected: (val) =>
+                    applicationBloc.setPlaceType('hiking', val, _radius),
+                selected: applicationBloc.placeType == 'hiking',
+
+              ),
+
+            ],
+          ),
+        ),
+        SizedBox(height: size.height * 0.02),
         Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Text("Radius $_radius m", style: TextStyle(fontSize: 24),),
+            Text(
+              "Radius $_radius m",
+              style: TextStyle(fontSize: 24),
+            ),
             Slider(
               value: _radius,
               min: 500,
@@ -182,10 +240,9 @@ class _UserMapState extends State<UserMap> {
 
   Future<void> _goToPlace(Place place) async {
     final GoogleMapController controller = await _mapController.future;
-    controller.animateCamera(
-      CameraUpdate.newCameraPosition(
-        CameraPosition(target: LatLng(place.geometry.location.lat, place.geometry.location.lng), zoom: 14.0)
-      )
-    );
+    controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+        target:
+            LatLng(place.geometry.location.lat, place.geometry.location.lng),
+        zoom: 14.0)));
   }
 }

@@ -26,6 +26,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    didChangeDependencies();
     // TODO: Theme icon needs to be added into the settings page
     theme = UserPreferences.getTheme() ?? "dark";
   }
@@ -121,13 +122,3 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-/*
-                IconButton(
-                icon: Icon(theme == "dark" ? Icons.brightness_4 : Icons.brightness_2),
-              onPressed: () async {
-                if (theme == "dark")
-                  await UserPreferences.setTheme("light");
-                else
-                  await UserPreferences.setTheme("dark");
-                  })
-              */
