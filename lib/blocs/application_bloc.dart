@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_appp/models/place_details.dart';
 import 'package:flutter_appp/models/place_search.dart';
+import 'package:flutter_appp/models/specific_search.dart';
 import 'package:flutter_appp/services/geolocator_service.dart';
 import 'package:flutter_appp/services/marker_service.dart';
 import 'package:flutter_appp/services/places_service.dart';
@@ -20,6 +21,7 @@ class ApplicationBloc with ChangeNotifier {
   StreamController<LatLngBounds> bounds = StreamController<LatLngBounds>.broadcast();
   String placeType = '';
   List<Marker> markers = [];
+  List<SpecificSearch> homePlaces = [];
   // this gives error: Close instances of `dart.core.Sink`.
   // to fix this, create dispose method
 
@@ -29,6 +31,7 @@ class ApplicationBloc with ChangeNotifier {
   ApplicationBloc() {
     setLastKnownLocation();
     setCurrentLocation();
+    getPlaces();
   }
   setLastKnownLocation() async {
     currentLocation = await geoLocatorService.getCurrentLocation();
@@ -68,6 +71,13 @@ class ApplicationBloc with ChangeNotifier {
 
     notifyListeners();
   }
+  getPlaces() async {
+    var places = await placesService.searchNature('nature_park', 1000);
+    homePlaces = places;
+
+    notifyListeners();
+  }
+
   @override
   void dispose() {
     // I need to use this in the page I need -> user_map.dart -> listen: false

@@ -1,6 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_appp/models/place_details.dart';
 import 'package:flutter_appp/models/place_search.dart';
-import 'package:flutter_appp/models/search_details.dart';
+import 'package:flutter_appp/models/specific_search.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
@@ -39,8 +40,19 @@ class PlacesService {
     var response = await http.get(url);
     var json = convert.jsonDecode(response.body);
     var jsonResults = json['results'] as List;
-    // print(jsonResults);
-    print(jsonResults.map((place) => SpecificSearch.fromJSON(place)).toList());
+    print(jsonResults.toString());
+    // print(jsonResults.map((place) => SpecificSearch.fromJSON(place)).toList());
     return jsonResults.map((place) => SpecificSearch.fromJSON(place)).toList();
   }
+  /*
+  Future<String> getPlacePhotoReference(String placeId) async {
+    var url = Uri.parse('https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&fields=photo&key=$key');
+    var response = await http.get(url);
+    var json = convert.jsonDecode(response.body);
+    var jsonResult = json["result"]["photos"][0]["photo_reference"];
+    return jsonResult;
+  } */
+
+
+
 }

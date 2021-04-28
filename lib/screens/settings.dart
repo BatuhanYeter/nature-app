@@ -6,7 +6,6 @@ import 'package:flutter_appp/theme.dart';
 import 'package:flutter_appp/widgets/accounts_row.dart';
 import 'package:flutter_appp/widgets/notification_row.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Settings extends StatefulWidget {
   @override

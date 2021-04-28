@@ -1,4 +1,4 @@
-import 'package:flutter_appp/models/search_details.dart';
+import 'package:flutter_appp/models/specific_search.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MarkerService {
