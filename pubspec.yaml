@@ -34,13 +34,13 @@ dependencies:
   provider: ^5.0.0
   font_awesome_flutter: ^9.0.0
   shared_preferences: ^2.0.5
-  theme_provider: ^0.5.0
   flutter_native_splash: ^1.1.7+1
   intl: ^0.17.0
   google_maps_flutter: ^2.0.3
   location: ^4.1.1
   geolocator: ^7.0.3
   http: ^0.13.1
+  animated_theme_switcher: ^2.0.1-nullsafety.0
 
 flutter_native_splash:
   color: "#74c494"

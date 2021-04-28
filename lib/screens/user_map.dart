@@ -119,7 +119,7 @@ class _UserMapState extends State<UserMap> {
         Stack(
           children: [
             Container(
-              height: size.height * 0.55,
+              height: size.height * 0.50,
               width: double.infinity,
               child: GoogleMap(
                 initialCameraPosition: CameraPosition(
@@ -137,7 +137,7 @@ class _UserMapState extends State<UserMap> {
             ),
             if (applicationBloc.searchResults.length != 0)
               Container(
-                height: size.height * 0.55,
+                height: size.height * 0.50,
                 width: double.infinity,
                 decoration: BoxDecoration(
                     color: Colors.black.withOpacity(.6),
@@ -145,7 +145,7 @@ class _UserMapState extends State<UserMap> {
               ),
             if (applicationBloc.searchResults.length != 0)
               Container(
-                height: size.height * 0.55,
+                height: size.height * 0.50,
                 width: double.infinity,
                 child: ListView.builder(
                   itemCount: applicationBloc.searchResults.length,
@@ -166,7 +166,7 @@ class _UserMapState extends State<UserMap> {
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Text("Filter", style: TextStyle(fontSize: size.width * 0.06, fontWeight: FontWeight.bold),),
+          child: Text("Find the nearest", style: TextStyle(fontSize: size.width * 0.06, fontWeight: FontWeight.bold),),
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),
@@ -212,7 +212,6 @@ class _UserMapState extends State<UserMap> {
             ],
           ),
         ),
-        SizedBox(height: size.height * 0.02),
         Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [

@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_appp/blocs/application_bloc.dart';
-import 'package:flutter_appp/provider/location_provider.dart';
 import 'package:flutter_appp/screens/after_register/first_screen_ar.dart';
 import 'package:flutter_appp/screens/after_register/second_screen_ar.dart';
 import 'package:flutter_appp/screens/after_register/third_screen_ar.dart';
 import 'package:flutter_appp/screens/forgot_password.dart';
 import 'package:flutter_appp/screens/home.dart';
 import 'package:flutter_appp/screens/login.dart';
-import 'package:flutter_appp/screens/maps.dart';
 import 'package:flutter_appp/screens/user_map.dart';
 import 'package:flutter_appp/screens/profile.dart';
 import 'package:flutter_appp/screens/settings.dart';
@@ -18,6 +16,7 @@ import 'package:flutter_appp/services/preferences.dart';
 import 'package:flutter_appp/services/wrapper.dart';
 import 'package:flutter_appp/theme.dart';
 import 'package:provider/provider.dart';
+import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 
 Future<void> main() async {
   // FlutterFire and Firebase need to be initialized
@@ -25,17 +24,13 @@ Future<void> main() async {
   await Firebase.initializeApp();
 
   await UserPreferences.init();
-
   String theme = UserPreferences.getTheme() ?? "dark";
-  runApp(MyApp(
-    theme: theme,
-  ));
+  runApp(MyApp(theme: theme,));
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key, required this.theme}) : super(key: key);
   final String theme;
-
   @override
   Widget build(BuildContext context) {
     // Providers
@@ -46,36 +41,38 @@ class MyApp extends StatelessWidget {
           ),
           StreamProvider(
             create: (context) =>
-                context
-                    .read<AuthenticationService>()
-                    .auth
-                    .authStateChanges(),
+                context.read<AuthenticationService>().auth.authStateChanges(),
             initialData: null,
           ),
           ChangeNotifierProvider(
-            create: (context) => LocationProvider(), child: MyMap(),),
-          ChangeNotifierProvider(create: (context) => ApplicationBloc(), child: UserMap(),)
+            create: (context) => ApplicationBloc(),
+            child: UserMap(),
+          ),
         ],
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          initialRoute: '/',
-          theme: theme == "dark" ? darkTheme : lightTheme,
-          //darkTheme: darkTheme,
-          //themeMode: ThemeMode.system,
-          // by default, gets the theme from system
-          routes: {
-            '/': (context) => Wrapper(),
-            '/login': (context) => LoginPage(),
-            '/forgotPassword': (context) => ForgotPassword(),
-            '/signUp': (context) => SignUp(),
-            '/home': (context) => HomePage(),
-            '/profile': (context) => Profile(),
-            '/settings': (context) => Settings(),
-            '/firstScreenAR': (context) => FirstScreenAR(),
-            '/secondScreenAR': (context) => SecondScreenAR(),
-            '/thirdScreenAR': (context) => ThirdScreenAR(),
-            '/maps': (context) => UserMap(),
-          },
-        ));
+        child: ThemeProvider(
+            initTheme: UserPreferences.getTheme() == 'dark' ? darkTheme : lightTheme,
+            child: Builder(
+              builder: (context) => MaterialApp(
+                debugShowCheckedModeBanner: false,
+                initialRoute: '/',
+                theme: ThemeProvider.of(context),
+                //darkTheme: darkTheme,
+                //themeMode: ThemeMode.system,
+                // by default, gets the theme from system
+                routes: {
+                  '/': (context) => Wrapper(),
+                  '/login': (context) => LoginPage(),
+                  '/forgotPassword': (context) => ForgotPassword(),
+                  '/signUp': (context) => SignUp(),
+                  '/home': (context) => HomePage(),
+                  '/profile': (context) => Profile(),
+                  '/settings': (context) => Settings(),
+                  '/firstScreenAR': (context) => FirstScreenAR(),
+                  '/secondScreenAR': (context) => SecondScreenAR(),
+                  '/thirdScreenAR': (context) => ThirdScreenAR(),
+                  '/maps': (context) => UserMap(),
+                },
+              ),
+            )));
   }
 }

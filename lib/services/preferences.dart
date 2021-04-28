@@ -1,6 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-// TODO: Dynamic theme
 class UserPreferences {
   static late SharedPreferences _preferences;
   // a
