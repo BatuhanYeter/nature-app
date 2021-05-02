@@ -14,6 +14,7 @@ class ApplicationBloc with ChangeNotifier {
   final geoLocatorService = GeoLocatorService();
   final placesService = PlacesService();
   final markerService = MarkerService();
+
   // variables
   late Position currentLocation;
   List<PlaceSearch> searchResults = [];
@@ -22,17 +23,21 @@ class ApplicationBloc with ChangeNotifier {
   String placeType = '';
   List<Marker> markers = [];
   List<SpecificSearch> homePlaces = [];
+  String photoReference = '';
+
   // this gives error: Close instances of `dart.core.Sink`.
   // to fix this, create dispose method
 
-  Future getCurrentLocation() async {
-    return currentLocation;
-  }
+
   ApplicationBloc() {
     setLastKnownLocation();
     setCurrentLocation();
     getPlaces();
   }
+  Future getCurrentLocation() async {
+    return currentLocation;
+  }
+
   setLastKnownLocation() async {
     currentLocation = await geoLocatorService.getCurrentLocation();
     notifyListeners();
@@ -72,7 +77,7 @@ class ApplicationBloc with ChangeNotifier {
     notifyListeners();
   }
   getPlaces() async {
-    var places = await placesService.searchNature('nature_park', 1000);
+    var places = await placesService.searchNature('nature_park', 250);
     homePlaces = places;
 
     notifyListeners();

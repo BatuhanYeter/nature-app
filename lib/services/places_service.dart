@@ -40,18 +40,18 @@ class PlacesService {
     var response = await http.get(url);
     var json = convert.jsonDecode(response.body);
     var jsonResults = json['results'] as List;
-    print(jsonResults.toString());
+
     // print(jsonResults.map((place) => SpecificSearch.fromJSON(place)).toList());
     return jsonResults.map((place) => SpecificSearch.fromJSON(place)).toList();
   }
-  /*
+
   Future<String> getPlacePhotoReference(String placeId) async {
     var url = Uri.parse('https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&fields=photo&key=$key');
     var response = await http.get(url);
     var json = convert.jsonDecode(response.body);
     var jsonResult = json["result"]["photos"][0]["photo_reference"];
     return jsonResult;
-  } */
+  }
 
 
 
