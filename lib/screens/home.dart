@@ -37,6 +37,12 @@ class _HomePageState extends State<HomePage> {
     // final Preferences pref = Preferences();
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          IconButton(
+            icon: _selectedIndex == 1 ? Icon(Icons.add) : Icon(FontAwesomeIcons.userEdit),
+            onPressed: _selectedIndex == 1 ? () => Navigator.pushNamed(context, '/addEvent') : () => Navigator.pushNamed(context, '/profile'),
+          )
+        ],
         centerTitle: true,
         title: Text("Nature Calls"),
         leading: IconButton(
@@ -105,6 +111,11 @@ class _HomePageState extends State<HomePage> {
             title: Text("Profile", style: TextStyle(fontSize: 20)),
             leading: Icon(FontAwesomeIcons.userEdit),
             onTap: () => Navigator.pushNamed(context, "/profile"),
+          ),
+          ListTile(
+            title: Text("Add Event", style: TextStyle(fontSize: 20)),
+            leading: Icon(FontAwesomeIcons.calendarPlus),
+            onTap: () => Navigator.pushNamed(context, "/addEvent"),
           ),
           ListTile(
             title: Text("Messages", style: TextStyle(fontSize: 20)),

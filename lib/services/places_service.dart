@@ -9,7 +9,7 @@ class PlacesService {
   final key = 'AIzaSyBB6urxKy4DqowYs603axJM2g1joMVmhSY';
 
   Future<List<PlaceSearch>> getAutoComplete(String search, double radius) async {
-    // /maps/api/place/autocomplete/xml?input -> I changed xlm to json
+    // /maps/api/place/autocomplete/xml?input -> I need json
     var url = Uri.parse('https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$search&types=establishment&radius=$radius&key=$key');
     var response = await http.get(url);
     var json = convert.jsonDecode(response.body);
@@ -18,7 +18,7 @@ class PlacesService {
   }
 
   Future<Place> getPlaceDetails(String placeId) async {
-    // /maps/api/place/autocomplete/xml?input -> I changed xlm to json
+    // /maps/api/place/autocomplete/xml?input -> I need json
     var url = Uri.parse('https://maps.googleapis.com/maps/api/place/details/json?key=$key&place_id=$placeId');
     var response = await http.get(url);
     var json = convert.jsonDecode(response.body);

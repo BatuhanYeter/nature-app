@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_appp/blocs/application_bloc.dart';
+import 'package:flutter_appp/screens/edit_event.dart';
 import 'package:flutter_appp/screens/after_register/first_screen_ar.dart';
 import 'package:flutter_appp/screens/after_register/second_screen_ar.dart';
 import 'package:flutter_appp/screens/after_register/third_screen_ar.dart';
@@ -12,6 +13,7 @@ import 'package:flutter_appp/screens/profile.dart';
 import 'package:flutter_appp/screens/settings.dart';
 import 'package:flutter_appp/screens/sign_up.dart';
 import 'package:flutter_appp/services/authentication_service.dart';
+import 'package:flutter_appp/services/event_provider.dart';
 import 'package:flutter_appp/services/preferences.dart';
 import 'package:flutter_appp/services/wrapper.dart';
 import 'package:flutter_appp/theme.dart';
@@ -25,12 +27,15 @@ Future<void> main() async {
 
   await UserPreferences.init();
   String theme = UserPreferences.getTheme() ?? "dark";
-  runApp(MyApp(theme: theme,));
+  runApp(MyApp(
+    theme: theme,
+  ));
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key, required this.theme}) : super(key: key);
   final String theme;
+
   @override
   Widget build(BuildContext context) {
     // Providers
@@ -48,9 +53,14 @@ class MyApp extends StatelessWidget {
             create: (context) => ApplicationBloc(),
             child: UserMap(),
           ),
+          ChangeNotifierProvider(
+            create: (context) => EventProvider(),
+            child: EditEvent(),
+          ),
         ],
         child: ThemeProvider(
-            initTheme: UserPreferences.getTheme() == 'dark' ? darkTheme : lightTheme,
+            initTheme:
+                UserPreferences.getTheme() == 'dark' ? darkTheme : lightTheme,
             child: Builder(
               builder: (context) => MaterialApp(
                 debugShowCheckedModeBanner: false,
@@ -71,6 +81,7 @@ class MyApp extends StatelessWidget {
                   '/secondScreenAR': (context) => SecondScreenAR(),
                   '/thirdScreenAR': (context) => ThirdScreenAR(),
                   '/maps': (context) => UserMap(),
+                  '/addEvent': (context) => EditEvent(),
                 },
               ),
             )));
