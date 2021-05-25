@@ -118,6 +118,11 @@ class _HomePageState extends State<HomePage> {
             onTap: () => Navigator.pushNamed(context, "/addEvent"),
           ),
           ListTile(
+            title: Text("My Events", style: TextStyle(fontSize: 20)),
+            leading: Icon(FontAwesomeIcons.calendar),
+            onTap: () => Navigator.pushNamed(context, "/myEvents"),
+          ),
+          ListTile(
             title: Text("Messages", style: TextStyle(fontSize: 20)),
             leading: Icon(FontAwesomeIcons.envelope),
             onTap: () {},

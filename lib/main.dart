@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_appp/blocs/application_bloc.dart';
+import 'package:flutter_appp/screens/current_user_events.dart';
 import 'package:flutter_appp/screens/edit_event.dart';
 import 'package:flutter_appp/screens/after_register/first_screen_ar.dart';
 import 'package:flutter_appp/screens/after_register/second_screen_ar.dart';
@@ -82,6 +83,7 @@ class MyApp extends StatelessWidget {
                   '/thirdScreenAR': (context) => ThirdScreenAR(),
                   '/maps': (context) => UserMap(),
                   '/addEvent': (context) => EditEvent(),
+                  '/myEvents': (context) => CurrentUserEvents()
                 },
               ),
             )));

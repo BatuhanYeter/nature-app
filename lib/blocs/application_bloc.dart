@@ -1,9 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_appp/models/event.dart';
 import 'package:flutter_appp/models/place_details.dart';
 import 'package:flutter_appp/models/place_search.dart';
 import 'package:flutter_appp/models/specific_search.dart';
+import 'package:flutter_appp/services/events_service.dart';
 import 'package:flutter_appp/services/geolocator_service.dart';
 import 'package:flutter_appp/services/marker_service.dart';
 import 'package:flutter_appp/services/places_service.dart';
@@ -14,7 +16,7 @@ class ApplicationBloc with ChangeNotifier {
   final geoLocatorService = GeoLocatorService();
   final placesService = PlacesService();
   final markerService = MarkerService();
-
+  final eventService = EventsService();
   // variables
   late Position currentLocation;
   List<PlaceSearch> searchResults = [];
@@ -24,7 +26,8 @@ class ApplicationBloc with ChangeNotifier {
   List<Marker> markers = [];
   List<SpecificSearch> homePlaces = [];
   String photoReference = '';
-
+  // List<Event> events = [];
+  var allEvents = [];
   // this gives error: Close instances of `dart.core.Sink`.
   // to fix this, create dispose method
 
@@ -33,6 +36,8 @@ class ApplicationBloc with ChangeNotifier {
     setLastKnownLocation();
     setCurrentLocation();
     getPlaces();
+    // getCurrentEvents();
+    getAllEvents();
   }
   Future getCurrentLocation() async {
     return currentLocation;
@@ -82,7 +87,14 @@ class ApplicationBloc with ChangeNotifier {
 
     notifyListeners();
   }
+  /* getCurrentEvents() async {
+    events = await eventService.getCurrentEvents() ?? [];
+  } */
 
+  getAllEvents() async {
+    allEvents = await eventService.getEvents() ?? [];
+    print("----------------" + allEvents.length.toString());
+  }
   @override
   void dispose() {
     // I need to use this in the page I need -> user_map.dart -> listen: false

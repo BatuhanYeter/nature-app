@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_appp/models/event.dart';
 import 'package:flutter_appp/services/event_provider.dart';
+import 'package:flutter_appp/services/events_service.dart';
 import 'package:flutter_appp/utils.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class EditEvent extends StatefulWidget {
@@ -19,6 +19,7 @@ class _EditEventState extends State<EditEvent> {
   final titleController = TextEditingController(); // dispose it
   late DateTime fromDate;
   late DateTime toDate;
+  final EventsService _eventsService = EventsService();
 
   @override
   void initState() {
@@ -32,9 +33,6 @@ class _EditEventState extends State<EditEvent> {
       titleController.text = event!.title;
       fromDate = event.from;
       toDate = event.to;
-
-
-
     }
   }
 
@@ -127,25 +125,27 @@ class _EditEventState extends State<EditEvent> {
     final isValid = _formKey.currentState!.validate();
     if (isValid) {
       final event = Event(
-        title: titleController.text,
-        from: fromDate,
-        to: toDate,
-        description: 'Description',
-        isAllDay: false
-      );
+          title: titleController.text,
+          from: fromDate,
+          to: toDate,
+          description: 'Description',
+          isAllDay: false);
 
       final isEditing = widget.event != null;
 
       final provider = Provider.of<EventProvider>(context, listen: false);
 
-      if(isEditing) {
-        provider.editEvent(event, widget.event!);
-
+      if (isEditing) {
+        // provider.editEvent(event, widget.event!);
+        _eventsService.addEvent(event);
+        // _eventsService.getCurrentEvents();
         Navigator.of(context).pop();
       } else {
-        provider.addEvent(event);
+        // provider.addEvent(event);
+        _eventsService.addEvent(event);
+        _formKey.currentState!.save();
+        // _eventsService.getCurrentEvents();
       }
-
 
       Navigator.of(context).pop();
     }
