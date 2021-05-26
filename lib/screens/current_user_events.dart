@@ -14,8 +14,9 @@ class CurrentUserEvents extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     final applicationBloc = Provider.of<ApplicationBloc>(context);
 
-    final events = applicationBloc.allEvents;
+    final events = applicationBloc.events;
     print("-----------" + events.length.toString());
+    print("-----------" + events[0].from.toString());
     return Scaffold(
       appBar: AppBar(
         leading: CloseButton(),

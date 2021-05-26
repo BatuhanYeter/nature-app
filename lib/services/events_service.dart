@@ -7,12 +7,17 @@ class EventsService {
 
   Future<void> addEvent(Event event) async {
     try {
-      User user = auth.currentUser!;
-      CollectionReference events = FirebaseFirestore.instance
+      /*
+
           .collection('users')
           .doc(user.uid)
+       */
+      User user = auth.currentUser!;
+      CollectionReference events = FirebaseFirestore.instance
           .collection('events');
+
       var eventData = {
+        'by': user.uid,
         'title': event.title,
         'from': event.from,
         'to': event.to,
@@ -27,30 +32,27 @@ class EventsService {
     }
   }
 
-/*
+
   Future getCurrentEvents() async {
     try {
       User user = auth.currentUser!;
-      var events = FirebaseFirestore.instance
-          .collection('users')
-          .doc(user.uid)
-          .collection('events')
-          .get();
+      var events = await FirebaseFirestore.instance
+          .collection('events').where('by', isEqualTo: user.uid.toString()).get();
 
-      return events as List<Event>;
+      return events.docs.map((doc) => Event(
+          title: doc['title'],
+          description: doc['description'],
+          from: doc['from'].toDate(),
+          to: doc['to'].toDate())).toList();
     } catch (e) {
       print(e.toString());
     }
-  } */
+  }
 
   Future getEvents() async {
     try {
-      User user = auth.currentUser!;
       var events = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(user.uid)
-          .collection('events')
-          .get();
+          .collection('events').get();
 
       return events.docs.map((doc) => Event(
           title: doc['title'],

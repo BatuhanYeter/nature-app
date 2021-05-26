@@ -26,7 +26,7 @@ class ApplicationBloc with ChangeNotifier {
   List<Marker> markers = [];
   List<SpecificSearch> homePlaces = [];
   String photoReference = '';
-  // List<Event> events = [];
+  var events = [];
   var allEvents = [];
   // this gives error: Close instances of `dart.core.Sink`.
   // to fix this, create dispose method
@@ -36,7 +36,7 @@ class ApplicationBloc with ChangeNotifier {
     setLastKnownLocation();
     setCurrentLocation();
     getPlaces();
-    // getCurrentEvents();
+    getCurrentEvents();
     getAllEvents();
   }
   Future getCurrentLocation() async {
@@ -87,13 +87,16 @@ class ApplicationBloc with ChangeNotifier {
 
     notifyListeners();
   }
-  /* getCurrentEvents() async {
-    events = await eventService.getCurrentEvents() ?? [];
-  } */
+   getCurrentEvents() async {
+    var myEvents = await eventService.getCurrentEvents() ?? [];
+    events = myEvents;
+    notifyListeners();
+  }
 
   getAllEvents() async {
     allEvents = await eventService.getEvents() ?? [];
     print("----------------" + allEvents.length.toString());
+    notifyListeners();
   }
   @override
   void dispose() {
