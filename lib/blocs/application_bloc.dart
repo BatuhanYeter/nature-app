@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_appp/models/comment.dart';
 import 'package:flutter_appp/models/event.dart';
 import 'package:flutter_appp/models/place_details.dart';
 import 'package:flutter_appp/models/place_search.dart';
@@ -28,6 +29,7 @@ class ApplicationBloc with ChangeNotifier {
   String photoReference = '';
   var events = [];
   var allEvents = [];
+  var comments = [];
   // this gives error: Close instances of `dart.core.Sink`.
   // to fix this, create dispose method
 
@@ -38,6 +40,7 @@ class ApplicationBloc with ChangeNotifier {
     getPlaces();
     getCurrentEvents();
     getAllEvents();
+    getComments();
   }
   Future getCurrentLocation() async {
     return currentLocation;
@@ -96,6 +99,12 @@ class ApplicationBloc with ChangeNotifier {
   getAllEvents() async {
     allEvents = await eventService.getEvents() ?? [];
     print("----------------" + allEvents.length.toString());
+    notifyListeners();
+  }
+
+  getComments() async {
+    comments = await placesService.getComments() ?? [];
+    print("app bloc----------------" + comments.toString());
     notifyListeners();
   }
   @override

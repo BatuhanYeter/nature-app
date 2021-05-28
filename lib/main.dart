@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_appp/blocs/add_comment.dart';
 import 'package:flutter_appp/blocs/application_bloc.dart';
 import 'package:flutter_appp/screens/current_user_events.dart';
 import 'package:flutter_appp/screens/edit_event.dart';
@@ -8,6 +9,7 @@ import 'package:flutter_appp/screens/after_register/second_screen_ar.dart';
 import 'package:flutter_appp/screens/after_register/third_screen_ar.dart';
 import 'package:flutter_appp/screens/forgot_password.dart';
 import 'package:flutter_appp/screens/home.dart';
+import 'package:flutter_appp/screens/home_tabs/home_body.dart';
 import 'package:flutter_appp/screens/login.dart';
 import 'package:flutter_appp/screens/user_map.dart';
 import 'package:flutter_appp/screens/profile.dart';
@@ -57,6 +59,10 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(
             create: (context) => EventProvider(),
             child: EditEvent(),
+          ),
+          ChangeNotifierProvider(
+            create: (context) => AddComment(),
+            child: HomeBody(),
           ),
         ],
         child: ThemeProvider(

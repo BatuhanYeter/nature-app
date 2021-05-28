@@ -97,7 +97,7 @@ class _ProfileState extends State<Profile> {
                     ),
                   ),
                   buildTextField(
-                      "Name", snapshot.data?.get('name'), nameController, name),
+                      "Name", snapshot.data?.get('name') ?? '', nameController, name),
                   SizedBox(
                     height: size.height * 0.02,
                   ),

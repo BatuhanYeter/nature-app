@@ -1,5 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_appp/blocs/add_comment.dart';
 import 'package:flutter_appp/blocs/application_bloc.dart';
+import 'package:flutter_appp/models/comment.dart';
+import 'package:flutter_appp/services/events_service.dart';
+import 'package:flutter_appp/services/places_service.dart';
+import 'package:flutter_appp/widgets/comments_list.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
@@ -27,7 +33,10 @@ class _HomeBodyState extends State<HomeBody> {
   @override
   Widget build(BuildContext context) {
     final applicationBloc = Provider.of<ApplicationBloc>(context);
+    final addCommentBloc = Provider.of<AddComment>(context);
+    final placesService = PlacesService();
     Size size = MediaQuery.of(context).size;
+
     return Container(
         width: size.width,
         height: size.height,
@@ -38,8 +47,7 @@ class _HomeBodyState extends State<HomeBody> {
                 children: [
                   Card(
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(size.width * 0.04)
-                    ),
+                        borderRadius: BorderRadius.circular(size.width * 0.04)),
                     child: Container(
                       padding: EdgeInsets.fromLTRB(0, 0, 0, size.width * 0.04),
                       child: Column(
@@ -49,8 +57,7 @@ class _HomeBodyState extends State<HomeBody> {
                             title: Text(applicationBloc.homePlaces[index].name),
                             subtitle: Text(
                               "Somewhere over the rainbow",
-                              style:
-                                  TextStyle(fontSize: size.width * 0.04),
+                              style: TextStyle(fontSize: size.width * 0.04),
                             ),
                           ),
                           Padding(
@@ -59,9 +66,44 @@ class _HomeBodyState extends State<HomeBody> {
                               applicationBloc.homePlaces[index].address,
                             ),
                           ),
-                          getImage(applicationBloc
-                              .homePlaces[index].photoReference
-                              .toString(), (size.height * 0.3).toInt(), (size.width * 0.8).toInt()),
+                          getImage(
+                              applicationBloc.homePlaces[index].photoReference
+                                  .toString(),
+                              (size.height * 0.3).toInt(),
+                              (size.width * 0.8).toInt()),
+                          FutureBuilder(
+                              future: placesService.getComments(),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return CircularProgressIndicator();
+                                }
+                                return CommentsList(
+                                  placeId:
+                                      applicationBloc.homePlaces[index].placeId,
+                                );
+                              }),
+                          FutureBuilder(
+                              future: placesService.getComments(),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return CircularProgressIndicator();
+                                }
+                                return Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: TextField(
+                                    onSubmitted: (String comment) {
+                                      addCommentBloc.addComment(
+                                          comment,
+                                          applicationBloc
+                                              .homePlaces[index].placeId);
+                                    },
+                                    decoration: InputDecoration(
+                                        hintText: "Add comment"),
+                                  ),
+                                );
+                              })
                         ],
                       ),
                     ),
