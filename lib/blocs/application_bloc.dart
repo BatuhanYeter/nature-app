@@ -26,10 +26,11 @@ class ApplicationBloc with ChangeNotifier {
   String placeType = '';
   List<Marker> markers = [];
   List<SpecificSearch> homePlaces = [];
+  List<SpecificSearch> forestPlaces = [];
   String photoReference = '';
   var events = [];
   var allEvents = [];
-  var comments = [];
+
   // this gives error: Close instances of `dart.core.Sink`.
   // to fix this, create dispose method
 
@@ -38,9 +39,9 @@ class ApplicationBloc with ChangeNotifier {
     setLastKnownLocation();
     setCurrentLocation();
     getPlaces();
+    getForestPlaces();
     getCurrentEvents();
     getAllEvents();
-    getComments();
   }
   Future getCurrentLocation() async {
     return currentLocation;
@@ -90,6 +91,13 @@ class ApplicationBloc with ChangeNotifier {
 
     notifyListeners();
   }
+
+  getForestPlaces() async {
+    var places = await placesService.searchNature('camping', 500);
+    forestPlaces = places;
+
+    notifyListeners();
+  }
    getCurrentEvents() async {
     var myEvents = await eventService.getCurrentEvents() ?? [];
     events = myEvents;
@@ -98,15 +106,10 @@ class ApplicationBloc with ChangeNotifier {
 
   getAllEvents() async {
     allEvents = await eventService.getEvents() ?? [];
-    print("----------------" + allEvents.length.toString());
+    // print("----------------" + allEvents.length.toString());
     notifyListeners();
   }
 
-  getComments() async {
-    comments = await placesService.getComments() ?? [];
-    print("app bloc----------------" + comments.toString());
-    notifyListeners();
-  }
   @override
   void dispose() {
     // I need to use this in the page I need -> user_map.dart -> listen: false

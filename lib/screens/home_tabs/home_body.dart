@@ -2,8 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_appp/blocs/add_comment.dart';
 import 'package:flutter_appp/blocs/application_bloc.dart';
-import 'package:flutter_appp/models/comment.dart';
-import 'package:flutter_appp/services/events_service.dart';
 import 'package:flutter_appp/services/places_service.dart';
 import 'package:flutter_appp/widgets/comments_list.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';

@@ -81,7 +81,7 @@ class PlacesService {
     try {
       var comments =
           await FirebaseFirestore.instance.collection('comments').get();
-      print("comments length: " + comments.docs.length.toString());
+      // print("comments length: " + comments.docs.length.toString());
 
       return comments.docs
           .map((doc) => Comment(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_appp/blocs/add_comment.dart';
 import 'package:flutter_appp/blocs/application_bloc.dart';
+import 'package:flutter_appp/screens/add_friend.dart';
 import 'package:flutter_appp/screens/current_user_events.dart';
 import 'package:flutter_appp/screens/edit_event.dart';
 import 'package:flutter_appp/screens/after_register/first_screen_ar.dart';
@@ -11,6 +12,7 @@ import 'package:flutter_appp/screens/forgot_password.dart';
 import 'package:flutter_appp/screens/home.dart';
 import 'package:flutter_appp/screens/home_tabs/home_body.dart';
 import 'package:flutter_appp/screens/login.dart';
+import 'package:flutter_appp/screens/friend_requests.dart';
 import 'package:flutter_appp/screens/user_map.dart';
 import 'package:flutter_appp/screens/profile.dart';
 import 'package:flutter_appp/screens/settings.dart';
@@ -89,7 +91,9 @@ class MyApp extends StatelessWidget {
                   '/thirdScreenAR': (context) => ThirdScreenAR(),
                   '/maps': (context) => UserMap(),
                   '/addEvent': (context) => EditEvent(),
-                  '/myEvents': (context) => CurrentUserEvents()
+                  '/myEvents': (context) => CurrentUserEvents(),
+                  '/friendRequest': (context) => FriendRequestScreen(),
+                  '/addFriend': (context) => AddFriend()
                 },
               ),
             )));

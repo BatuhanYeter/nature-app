@@ -123,6 +123,11 @@ class _HomePageState extends State<HomePage> {
             onTap: () => Navigator.pushNamed(context, "/myEvents"),
           ),
           ListTile(
+            title: Text("Friend Requests", style: TextStyle(fontSize: 20)),
+            leading: Icon(FontAwesomeIcons.users),
+            onTap: () => Navigator.pushNamed(context, "/friendRequest"),
+          ),
+          ListTile(
             title: Text("Messages", style: TextStyle(fontSize: 20)),
             leading: Icon(FontAwesomeIcons.envelope),
             onTap: () {},
