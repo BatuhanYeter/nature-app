@@ -42,14 +42,14 @@ class EventViewingPage extends StatelessWidget {
               Row(
                 children: [
                   Expanded(flex: 2, child: Text("From", style: TextStyle(fontSize: 20))),
-                  Expanded(child: Text(Utils.toDateTime(event.from))),
+                  Expanded(child: Text(Utils.toDateTimeString(event.from))),
                 ],
               ),
               SizedBox(height: size.height * 0.02,),
               Row(
                 children: [
                   Expanded(flex: 2, child: Text("To", style: TextStyle(fontSize: 20))),
-                  Expanded(child: Text(Utils.toDateTime(event.to))),
+                  Expanded(child: Text(Utils.toDateTimeString(event.to))),
                 ],
               ),
               SizedBox(height: size.height * 0.02,),

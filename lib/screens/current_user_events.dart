@@ -34,7 +34,7 @@ class CurrentUserEvents extends StatelessWidget {
                       Expanded(
                           flex: 2,
                           child: Text("From", style: TextStyle(fontSize: 20))),
-                      Expanded(child: Text(Utils.toDateTime(events[index].from))),
+                      Expanded(child: Text(Utils.toDateTimeString(events[index].from))),
                     ],
                   ),
                   SizedBox(
@@ -45,7 +45,7 @@ class CurrentUserEvents extends StatelessWidget {
                       Expanded(
                           flex: 2,
                           child: Text("To", style: TextStyle(fontSize: 20))),
-                      Expanded(child: Text(Utils.toDateTime(events[index].to))),
+                      Expanded(child: Text(Utils.toDateTimeString(events[index].to))),
                     ],
                   ),
                   SizedBox(

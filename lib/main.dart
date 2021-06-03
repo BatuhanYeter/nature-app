@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_appp/blocs/add_comment.dart';
 import 'package:flutter_appp/blocs/application_bloc.dart';
 import 'package:flutter_appp/screens/add_friend.dart';
+import 'package:flutter_appp/screens/chat_screen.dart';
 import 'package:flutter_appp/screens/current_user_events.dart';
 import 'package:flutter_appp/screens/edit_event.dart';
 import 'package:flutter_appp/screens/after_register/first_screen_ar.dart';
@@ -93,7 +94,8 @@ class MyApp extends StatelessWidget {
                   '/addEvent': (context) => EditEvent(),
                   '/myEvents': (context) => CurrentUserEvents(),
                   '/friendRequest': (context) => FriendRequestScreen(),
-                  '/addFriend': (context) => AddFriend()
+                  '/addFriend': (context) => AddFriend(),
+                  '/chat': (context) => ChatScreen()
                 },
               ),
             )));

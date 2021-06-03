@@ -6,6 +6,27 @@ class SocialService {
   FirebaseAuth auth = FirebaseAuth.instance;
   CollectionReference users = FirebaseFirestore.instance.collection('users');
 
+  static Future sendMessage(String userId, String message) async {
+    try {
+      final refMessages =
+      FirebaseFirestore.instance.collection('chats/$userId/messages');
+      FirebaseAuth auth = FirebaseAuth.instance;
+      User user = auth.currentUser!;
+
+      var newMessage = {
+        'userId': user.uid,
+        'message': message,
+        'createdAt': DateTime.now(),
+        'name': user.displayName,
+        'photoUrl': (user.photoURL!.isEmpty == true ? 'no-photo': user.photoURL)
+      };
+
+      await refMessages.add(newMessage);
+
+    } catch(e) {
+      print(e.toString());
+    }
+  }
   Future friendRequest(BuildContext context, {required String email}) async {
     try {
       User user = auth.currentUser!;
@@ -24,7 +45,11 @@ class SocialService {
           if (doc['email'] == email) {
             addedFriendId = doc.id;
             addedFriendName = doc['name'];
-            users.doc(addedFriendId).collection('friends').doc(user.uid).set(senderData);
+            users
+                .doc(addedFriendId)
+                .collection('friends')
+                .doc(user.uid)
+                .set(senderData);
             var friendData = {
               'id': addedFriendId,
               'email': email,
@@ -32,14 +57,16 @@ class SocialService {
               'isAccepted': false
             };
 
-            users.doc(user.uid).collection('friends').doc(addedFriendId).set(friendData).then((value) =>
-                ScaffoldMessenger.of(context)
-                    .showSnackBar(SnackBar(content: Text('An email has been sent.'))));
+            users
+                .doc(user.uid)
+                .collection('friends')
+                .doc(addedFriendId)
+                .set(friendData)
+                .then((value) => ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('An email has been sent.'))));
           }
         });
       });
-
-
     } catch (e) {
       print(e.toString());
     }
@@ -52,12 +79,19 @@ class SocialService {
       users.get().then((QuerySnapshot querySnapshot) {
         querySnapshot.docs.forEach((doc) {
           if (doc['email'] == email) {
-            users.doc(user.uid).collection('friends').doc(doc.id).update({'isAccepted': true});
-            users.doc(doc.id).collection('friends').doc(user.uid).update({'isAccepted': true});
+            users
+                .doc(user.uid)
+                .collection('friends')
+                .doc(doc.id)
+                .update({'isAccepted': true});
+            users
+                .doc(doc.id)
+                .collection('friends')
+                .doc(user.uid)
+                .update({'isAccepted': true});
           }
         });
       });
-
     } catch (e) {
       print(e.toString());
     }

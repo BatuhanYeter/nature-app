@@ -5,6 +5,7 @@ import 'package:flutter_appp/screens/home_tabs/home_body.dart';
 import 'package:flutter_appp/screens/home_tabs/sports.dart';
 import 'package:flutter_appp/services/authentication_service.dart';
 import 'package:flutter_appp/services/preferences.dart';
+import 'package:flutter_appp/services/updated_auth.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HomePage extends StatefulWidget {
@@ -34,20 +35,25 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final AuthenticationService auth = AuthenticationService();
+    final AuthMethods auth_2 = AuthMethods();
     // final Preferences pref = Preferences();
     return Scaffold(
       appBar: AppBar(
         actions: [
           IconButton(
-            icon: _selectedIndex == 1 ? Icon(Icons.add) : Icon(FontAwesomeIcons.userEdit),
-            onPressed: _selectedIndex == 1 ? () => Navigator.pushNamed(context, '/addEvent') : () => Navigator.pushNamed(context, '/profile'),
-          )
+              icon: Icon(Icons.exit_to_app),
+              onPressed: () => {auth_2.signOut(context)}),
         ],
         centerTitle: true,
         title: Text("Nature Calls"),
         leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () => {auth.signOut(context)}),
+          icon: _selectedIndex == 1
+              ? Icon(Icons.add)
+              : Icon(FontAwesomeIcons.userEdit),
+          onPressed: _selectedIndex == 1
+              ? () => Navigator.pushNamed(context, '/addEvent')
+              : () => Navigator.pushNamed(context, '/profile'),
+        )
       ),
       drawer: _drawer(context, auth),
       bottomNavigationBar: _bottomNavbar(),
@@ -128,9 +134,9 @@ class _HomePageState extends State<HomePage> {
             onTap: () => Navigator.pushNamed(context, "/friendRequest"),
           ),
           ListTile(
-            title: Text("Messages", style: TextStyle(fontSize: 20)),
+            title: Text("Chat", style: TextStyle(fontSize: 20)),
             leading: Icon(FontAwesomeIcons.envelope),
-            onTap: () {},
+            onTap: () => Navigator.pushNamed(context, "/chat"),
           ),
           ListTile(
             title: Text("Sign Out", style: TextStyle(fontSize: 20)),
@@ -142,4 +148,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-

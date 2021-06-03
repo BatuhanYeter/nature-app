@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_appp/constants.dart';
 import 'package:flutter_appp/services/authentication_service.dart';
+import 'package:flutter_appp/services/updated_auth.dart';
 import 'package:flutter_appp/widgets/background.dart';
 import 'package:flutter_appp/widgets/input_fields.dart';
 import 'package:flutter_appp/widgets/my_button.dart';
@@ -13,6 +14,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AuthenticationService auth = AuthenticationService();
+    final AuthMethods auth_2 = AuthMethods();
     Size size = MediaQuery.of(context).size;
     return Stack(
       children: <Widget>[
@@ -62,7 +64,7 @@ class LoginPage extends StatelessWidget {
                           children: [
                             GestureDetector(
                               onTap: () {
-                                auth.signInWithGoogle(context);
+                                auth_2.signInWithGoogle(context);
                               },
                               child: Container(
                                 width: size.width * 0.2,
