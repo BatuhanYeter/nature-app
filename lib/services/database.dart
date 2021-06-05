@@ -73,4 +73,11 @@ class DatabaseMethods {
         .where('users', arrayContains: myUserName)
         .snapshots();
   }
+
+  Future<QuerySnapshot> getUserInfo(String userName) async {
+    return FirebaseFirestore.instance
+        .collection("users")
+        .where("username", isEqualTo: userName)
+        .get();
+  }
 }

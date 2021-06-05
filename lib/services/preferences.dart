@@ -49,25 +49,25 @@ class UserPreferences {
   // get data
   Future<String> getUserName() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    print(prefs.getString(userNameKey));
+
     return prefs.getString(userNameKey) ?? 'Anonymous';
   }
 
   Future<String> getUserEmail() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    print(prefs.getString(userEmailKey));
+
     return prefs.getString(userEmailKey) ?? 'No-email';
   }
 
   Future<String> getUserId() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    print(prefs.getString(userIdKey));
+
     return prefs.getString(userIdKey) ?? 'no-id';
   }
 
   Future<String> getDisplayName() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    print(prefs.getString(displayNameKey));
+
     return prefs.getString(displayNameKey) ?? 'No-display-name';
   }
 

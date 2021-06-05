@@ -75,16 +75,20 @@ class _ChatRoomState extends State<ChatRoom> {
   Widget chatMessageTile(String message, bool sentByMe) {
     Size size = MediaQuery.of(context).size;
     return Row(
-      mainAxisAlignment: sentByMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+      mainAxisAlignment:
+          sentByMe ? MainAxisAlignment.end : MainAxisAlignment.start,
       children: [
         Container(
-          margin: EdgeInsets.symmetric(vertical: size.width * 0.02, horizontal: size.width * 0.02),
+          margin: EdgeInsets.symmetric(
+              vertical: size.width * 0.02, horizontal: size.width * 0.02),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(size.width * 0.03),
-            color: Theme.of(context).dialogBackgroundColor
-          ),
+              borderRadius: BorderRadius.circular(size.width * 0.03),
+              color: Theme.of(context).dialogBackgroundColor),
           padding: EdgeInsets.all(size.width * 0.02),
-          child: Text(message, style: TextStyle(fontSize: size.width * 0.04),),
+          child: Text(
+            message,
+            style: TextStyle(fontSize: size.width * 0.04),
+          ),
         ),
       ],
     );
@@ -104,7 +108,8 @@ class _ChatRoomState extends State<ChatRoom> {
                   itemCount: snapshot.data!.docs.length,
                   itemBuilder: (context, index) {
                     DocumentSnapshot ds = snapshot.data!.docs[index];
-                    return chatMessageTile(ds.data()!["message"], myUserName == ds.data()!["sentBy"]);
+                    return chatMessageTile(ds.data()!["message"],
+                        myUserName == ds.data()!["sentBy"]);
                   },
                 )
               : Center(
@@ -139,12 +144,15 @@ class _ChatRoomState extends State<ChatRoom> {
       ),
       body: Stack(
         children: [
-          chatMessages(),
+          Container(
+            height: size.height * 0.8,
+              child: chatMessages()),
           Container(
             alignment: AlignmentDirectional.bottomCenter,
             child: Container(
               color: Theme.of(context).primaryColor,
-              padding: EdgeInsets.symmetric(horizontal: size.width * 0.03, vertical: size.height * 0.015),
+              padding: EdgeInsets.symmetric(
+                  horizontal: size.width * 0.03, vertical: size.height * 0.015),
               child: Row(
                 children: [
                   Expanded(
@@ -161,7 +169,7 @@ class _ChatRoomState extends State<ChatRoom> {
                     ),
                   ),
                   IconButton(
-                    color: Colors.white,
+                      color: Colors.white,
                       icon: Icon(Icons.send),
                       onPressed: () {
                         addMessage(true);

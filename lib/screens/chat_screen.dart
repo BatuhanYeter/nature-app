@@ -41,24 +41,30 @@ class _ChatScreenState extends State<ChatScreen> {
         await DatabaseMethods().getUserByUserName(searchController.text);
     setState(() {});
   }
+
   Widget chatRoomsList() {
     return StreamBuilder<QuerySnapshot>(
         stream: chatRoomStream,
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           return snapshot.hasData
               ? ListView.builder(
-            shrinkWrap: true,
-            itemCount: snapshot.data!.docs.length,
-            itemBuilder: (context, index) {
-              DocumentSnapshot ds = snapshot.data!.docs[index];
-              return Text(ds.id);
-            },
-          )
+                  shrinkWrap: true,
+                  itemCount: snapshot.data!.docs.length,
+                  itemBuilder: (context, index) {
+                    DocumentSnapshot ds = snapshot.data!.docs[index];
+                    return ChatRoomListTile(
+                      chatRoomId: ds.id,
+                      myUserName: myUserName,
+                      lastMessage: ds.data()!['lastMessage'],
+                    );
+                  },
+                )
               : Center(
-            child: CircularProgressIndicator(),
-          );
+                  child: CircularProgressIndicator(),
+                );
         });
   }
+
   Widget searchUsersList() {
     return StreamBuilder<QuerySnapshot>(
         stream: usersStream,
@@ -128,18 +134,15 @@ class _ChatScreenState extends State<ChatScreen> {
 
   getChatRooms() async {
     chatRoomStream = await DatabaseMethods().getChatRooms();
-    setState(() {
-
-    });
+    setState(() {});
   }
 
   onScreenLoaded() async {
     await getMyInfoFromSharedPreference();
     getChatRooms();
-    setState(() {
-
-    });
+    setState(() {});
   }
+
   @override
   void initState() {
     onScreenLoaded();
@@ -189,5 +192,88 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
       ),
     );
+  }
+}
+
+class ChatRoomListTile extends StatefulWidget {
+  final String lastMessage, chatRoomId, myUserName;
+
+  ChatRoomListTile(
+      {Key? key,
+      required this.chatRoomId,
+      required this.lastMessage,
+      required this.myUserName})
+      : super(key: key);
+
+  @override
+  _ChatRoomListTileState createState() => _ChatRoomListTileState();
+}
+
+class _ChatRoomListTileState extends State<ChatRoomListTile> {
+  String photoUrl = "";
+  late String username, name;
+
+  getThisUsersInfo() async {
+    username =
+        widget.chatRoomId.replaceAll(widget.myUserName, "").replaceAll("_", "");
+    QuerySnapshot querySnapshot = await DatabaseMethods().getUserInfo(username);
+
+    name = querySnapshot.docs[0].data()['name'];
+    photoUrl = querySnapshot.docs[0].data()['photoUrl'];
+
+    setState(() {});
+  }
+
+  doThisBeforeLaunch() async {
+    await getThisUsersInfo();
+  }
+
+  @override
+  void initState() {
+    doThisBeforeLaunch();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    return photoUrl != ""
+        ? GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ChatRoom(
+                  chatWithName: name,
+                  chatWithUserName: username,
+                )));
+      },
+          child: Row(
+              children: [
+                ClipRRect(
+                  child: Image.network(
+                    photoUrl,
+                    width: size.width * 0.125,
+                    height: size.height * 0.1,
+                  ),
+                  borderRadius: BorderRadius.circular(size.width * 0.1),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      name,
+                      style: TextStyle(fontSize: size.height * 0.02),
+                    ),
+                    SizedBox(height: size.height * 0.002,),
+                    Text(widget.lastMessage)
+                  ],
+                )
+              ],
+            ),
+        )
+        : Center(
+            child: CircularProgressIndicator(),
+          );
   }
 }
