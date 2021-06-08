@@ -18,13 +18,17 @@ class ApplicationBloc with ChangeNotifier {
   final placesService = PlacesService();
   final markerService = MarkerService();
   final eventService = EventsService();
+
   // variables
   late Position currentLocation;
   List<PlaceSearch> searchResults = [];
-  StreamController<Place> selectedLocation = StreamController<Place>.broadcast();
-  StreamController<LatLngBounds> bounds = StreamController<LatLngBounds>.broadcast();
+  StreamController<Place> selectedLocation =
+      StreamController<Place>.broadcast();
+  StreamController<LatLngBounds> bounds =
+      StreamController<LatLngBounds>.broadcast();
   String placeType = '';
   List<Marker> markers = [];
+  Map<MarkerId, Marker> navigationMarkers = <MarkerId, Marker>{};
   List<SpecificSearch> homePlaces = [];
   List<SpecificSearch> forestPlaces = [];
   String photoReference = '';
@@ -34,7 +38,6 @@ class ApplicationBloc with ChangeNotifier {
   // this gives error: Close instances of `dart.core.Sink`.
   // to fix this, create dispose method
 
-
   ApplicationBloc() {
     setLastKnownLocation();
     setCurrentLocation();
@@ -43,7 +46,16 @@ class ApplicationBloc with ChangeNotifier {
     getCurrentEvents();
     getAllEvents();
   }
+
   Future getCurrentLocation() async {
+    final MarkerId markerId = MarkerId('currentLocation');
+    final Marker marker = Marker(
+      markerId: markerId,
+      position: LatLng(currentLocation.latitude, currentLocation.longitude),
+      infoWindow: InfoWindow(title: "Current Location"),
+    );
+    navigationMarkers[markerId] = marker;
+    print("c");
     return currentLocation;
   }
 
@@ -55,6 +67,8 @@ class ApplicationBloc with ChangeNotifier {
   // current location
   setCurrentLocation() async {
     currentLocation = await geoLocatorService.getCurrentLocation();
+
+    print("cc");
     notifyListeners();
   }
 
@@ -70,12 +84,13 @@ class ApplicationBloc with ChangeNotifier {
   }
 
   setPlaceType(String value, bool selected, double radius) async {
-    if(selected) {
+    if (selected) {
       placeType = value;
-    } else placeType = '';
+    } else
+      placeType = '';
 
     var places = await placesService.searchNature(placeType, radius);
-    if(places.length > 0) {
+    if (places.length > 0) {
       var newMarker = markerService.createMarkerFromPlace(places[0]);
       markers.add(newMarker);
     }
@@ -85,10 +100,21 @@ class ApplicationBloc with ChangeNotifier {
 
     notifyListeners();
   }
+
   getPlaces() async {
     var places = await placesService.searchNature('nature_park', 250);
     homePlaces = places;
-
+    if (homePlaces.length > 0) {
+      homePlaces.forEach((place) {
+        final MarkerId markerId = MarkerId(place.placeId);
+        final Marker marker = Marker(
+          markerId: markerId,
+          position: LatLng(place.geometry.location.lat, place.geometry.location.lng),
+          infoWindow: InfoWindow(title: place.address),
+        );
+        navigationMarkers[markerId] = marker;
+      });
+    }
     notifyListeners();
   }
 
@@ -98,7 +124,8 @@ class ApplicationBloc with ChangeNotifier {
 
     notifyListeners();
   }
-   getCurrentEvents() async {
+
+  getCurrentEvents() async {
     var myEvents = await eventService.getCurrentEvents() ?? [];
     events = myEvents;
     notifyListeners();

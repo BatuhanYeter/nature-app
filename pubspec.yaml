@@ -43,6 +43,8 @@ dependencies:
   animated_theme_switcher: ^2.0.1-nullsafety.0
   syncfusion_flutter_calendar: ^19.1.63
   random_string: ^2.2.0-nullsafety
+  dio: ^4.0.0
+  flutter_polyline_points: ^1.0.0
 flutter_native_splash:
   color: "#74c494"
   #background_image: "assets/icons/nature.png"

@@ -15,6 +15,7 @@ class UserMap extends StatefulWidget {
 class _UserMapState extends State<UserMap> {
   double _radius = 500;
   Completer<GoogleMapController> _mapController = Completer();
+
   late StreamSubscription locationSub;
   late StreamSubscription boundsSub;
   @override

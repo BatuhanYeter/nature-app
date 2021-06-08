@@ -57,7 +57,10 @@ class AuthMethods {
 
   Future signOut(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    final theme = UserPreferences.getTheme();
     prefs.clear();
+    final String newTheme = theme == 'dark' ? 'dark' : 'light';
+    UserPreferences.setTheme(newTheme);
     await auth.signOut().then((value) =>
         Navigator.pushNamedAndRemoveUntil(
             context, '/login', (route) => false));;
