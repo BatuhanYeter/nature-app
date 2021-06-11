@@ -55,7 +55,6 @@ class ApplicationBloc with ChangeNotifier {
       infoWindow: InfoWindow(title: "Current Location"),
     );
     navigationMarkers[markerId] = marker;
-    print("c");
     return currentLocation;
   }
 
@@ -121,7 +120,18 @@ class ApplicationBloc with ChangeNotifier {
   getForestPlaces() async {
     var places = await placesService.searchNature('camping', 500);
     forestPlaces = places;
-
+    if(forestPlaces.length > 0){
+      forestPlaces.forEach((place) {
+        final MarkerId markerId = MarkerId(place.placeId);
+        final Marker marker = Marker(
+          markerId: markerId,
+          position:
+              LatLng(place.geometry.location.lat, place.geometry.location.lng),
+          infoWindow: InfoWindow(title: place.address),
+        );
+        navigationMarkers[markerId] = marker;
+      });
+    }
     notifyListeners();
   }
 

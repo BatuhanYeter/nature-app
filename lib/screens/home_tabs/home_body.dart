@@ -36,8 +36,7 @@ class _HomeBodyState extends State<HomeBody> {
     final addCommentBloc = Provider.of<AddComment>(context);
     final placesService = PlacesService();
     Size size = MediaQuery.of(context).size;
-    Map<MarkerId, Marker> markers = Map<MarkerId, Marker>.of(applicationBloc.navigationMarkers);
-
+    print(applicationBloc.homePlaces.length.toString());
     return Container(
         width: size.width,
         height: size.height,

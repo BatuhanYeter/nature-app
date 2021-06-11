@@ -37,7 +37,7 @@ class PlacesService {
       String placeType, double radius) async {
     String query = '';
     if (placeType == 'nature_park')
-      query = 'nature+park';
+      query = 'nature+park+lake';
     else if (placeType == 'mountain')
       query = 'mountain+hill';
     else if (placeType == 'picnic')

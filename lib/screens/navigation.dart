@@ -24,8 +24,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
     final applicationBloc = Provider.of<ApplicationBloc>(context);
     var currentLocation = applicationBloc.currentLocation;
     var markers = applicationBloc.navigationMarkers;
-
-    // markers.forEach((key, value) {print(key.toString() + ", " + value.toString());});
+    Size size = MediaQuery.of(context).size;
     final MarkerId markerId = MarkerId('currentLocation');
     final Marker marker = Marker(
       markerId: markerId,
@@ -38,7 +37,6 @@ class _NavigationScreenState extends State<NavigationScreen> {
         leading: CloseButton(),
       ),
       body: Stack(children: [
-        info == null ? Container(color: Colors.amber, child: Text("0")) : Container(color: Colors.amber, child: Text(info!.totalDistance)),
         GoogleMap(
           polylines: {
             if (info != null)
@@ -58,24 +56,61 @@ class _NavigationScreenState extends State<NavigationScreen> {
           markers: {marker, markers[MarkerId(widget.dest.toString())]!},
           onMapCreated: (controller) => _mapController = controller,
         ),
-        IconButton(
-            icon: Icon(Icons.navigation),
-            onPressed: () async {
-              final direction = await DirectionsRepository(dio: Dio())
-                  .getDirections(
-                      origin: marker.position,
-                      dest:
-                          markers[MarkerId(widget.dest.toString())]!.position);
-              info = direction;
+        Positioned(
+          top: size.height * 0.02,
+          right: size.width * 0.04,
+          child: IconButton(
+              icon: Icon(
+                Icons.navigation,
+                color: Colors.amber,
+                size: size.height * 0.05,
+              ),
+              onPressed: () async {
+                final direction = await DirectionsRepository(dio: Dio())
+                    .getDirections(
+                        origin: marker.position,
+                        dest: markers[MarkerId(widget.dest.toString())]!
+                            .position);
+                info = direction;
 
-              _mapController.animateCamera(info != null
-                  ? CameraUpdate.newLatLngBounds(info!.bounds, 100.0)
-                  : CameraUpdate.newCameraPosition(CameraPosition(
-                      target: LatLng(applicationBloc.currentLocation.latitude,
-                          applicationBloc.currentLocation.longitude),
-                      zoom: 12)));
-              setState(() {});
-            })
+                _mapController.animateCamera(info != null
+                    ? CameraUpdate.newLatLngBounds(info!.bounds, 100.0)
+                    : CameraUpdate.newCameraPosition(CameraPosition(
+                        target: LatLng(applicationBloc.currentLocation.latitude,
+                            applicationBloc.currentLocation.longitude),
+                        zoom: 12)));
+                setState(() {});
+              }),
+        ),
+        if (info != null)
+          Positioned(
+            top: size.height * 0.02,
+            left: size.width * 0.04,
+            child: Container(
+              padding: EdgeInsets.symmetric(
+                vertical: size.height * 0.01,
+                horizontal: size.width * 0.02,
+              ),
+              decoration: BoxDecoration(
+                color: Colors.amber,
+                borderRadius: BorderRadius.circular(size.width * 0.06),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black26,
+                    offset: Offset(0, 2),
+                    blurRadius: 6.0,
+                  )
+                ],
+              ),
+              child: Text(
+                '${info!.totalDistance}, ${info!.totalDuration}',
+                style: TextStyle(
+                  fontSize: size.width * 0.05,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ),
       ]),
     );
   }

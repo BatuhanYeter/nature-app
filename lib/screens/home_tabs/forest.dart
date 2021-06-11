@@ -1,10 +1,15 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_appp/blocs/add_comment.dart';
 import 'package:flutter_appp/blocs/application_bloc.dart';
+import 'package:flutter_appp/screens/navigation.dart';
 import 'package:flutter_appp/services/places_service.dart';
 import 'package:flutter_appp/widgets/comments_list.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert' as convert;
 
 class Forest extends StatefulWidget {
   @override
@@ -24,12 +29,14 @@ class _ForestState extends State<Forest> {
     } else
       return Image.asset('assets/icons/logo.png');
   }
+
   @override
   Widget build(BuildContext context) {
     final applicationBloc = Provider.of<ApplicationBloc>(context);
     final addCommentBloc = Provider.of<AddComment>(context);
     final placesService = PlacesService();
     Size size = MediaQuery.of(context).size;
+    Map<MarkerId, Marker> markers = Map<MarkerId, Marker>.of(applicationBloc.navigationMarkers);
 
     return Container(
         width: size.width,
@@ -47,7 +54,18 @@ class _ForestState extends State<Forest> {
                       child: Column(
                         children: [
                           ListTile(
-                            leading: Icon(FontAwesomeIcons.bookmark),
+                            leading: IconButton(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            NavigationScreen(
+                                              dest: applicationBloc.forestPlaces[index].placeId,
+                                            )));
+                              },
+                              icon: Icon(Icons.navigation),
+                            ),
                             title: Text(applicationBloc.forestPlaces[index].name),
                             subtitle: Text(
                               "Somewhere over the rainbow",
@@ -106,6 +124,5 @@ class _ForestState extends State<Forest> {
                 ],
               );
             }));
-
   }
 }
