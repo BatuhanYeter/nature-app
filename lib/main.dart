@@ -15,6 +15,7 @@ import 'package:flutter_appp/screens/home_tabs/home_body.dart';
 import 'package:flutter_appp/screens/login.dart';
 import 'package:flutter_appp/screens/friend_requests.dart';
 import 'package:flutter_appp/screens/sport_tabs/calculate_distance.dart';
+import 'package:flutter_appp/screens/sport_tabs/step_count.dart';
 import 'package:flutter_appp/screens/user_map.dart';
 import 'package:flutter_appp/screens/profile.dart';
 import 'package:flutter_appp/screens/settings.dart';
@@ -97,7 +98,9 @@ class MyApp extends StatelessWidget {
                   '/friendRequest': (context) => FriendRequestScreen(),
                   '/addFriend': (context) => AddFriend(),
                   '/chat': (context) => ChatScreen(),
-                  '/calculateDistance': (context) => CalculateDistance()
+                  '/calculateDistance': (context) => CalculateDistance(),
+                  '/stepCount': (context) => StepCounter()
+
                 },
               ),
             )));

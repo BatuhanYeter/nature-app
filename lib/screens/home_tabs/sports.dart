@@ -28,7 +28,9 @@ class _SportsState extends State<Sports> {
               ),
               SizedBox(height: size.height * 0.05),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Navigator.pushNamed(context, "/stepCount");
+                },
                 child: Column(
                   children: [
                     Row(
