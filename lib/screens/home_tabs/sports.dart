@@ -11,129 +11,141 @@ class _SportsState extends State<Sports> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Column(
-      children: [
-        Container(
-          height: size.height * 0.4,
-          width: size.width,
-          padding: EdgeInsets.only(
-              left: size.width * 0.06,
-              right: size.width * 0.06,
-              top: size.height * 0.03),
-          child: ListView(
-            children: [
-              Text(
-                "Sport Features",
-                style: TextStyle(
-                    fontSize: size.width * 0.055, fontWeight: FontWeight.bold),
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.all(size.width * 0.02),
+            child: GridView(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisSpacing: size.width * 0.02,
+                crossAxisSpacing: size.height * 0.02,
               ),
-              SizedBox(height: size.height * 0.05),
-              GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(context, "/stepCount");
-                },
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/chronometer');
+                  },
+                  child: Card(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(
-                          "Pedometer",
-                          style: TextStyle(fontSize: size.width * 0.05),
-                        ),
                         Icon(
-                          FontAwesomeIcons.angleRight,
-                          size: size.width * 0.07,
+                          FontAwesomeIcons.clock,
+                          size: size.width * 0.15,
                         ),
                       ],
-                    )
-                  ],
+                    ),
+                  ),
                 ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(context, '/calculateDistance');
-                },
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/calculateDistance');
+                  },
+                  child: Card(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(
-                          "Calculate the distance of my route",
-                          style: TextStyle(fontSize: size.width * 0.05),
-                        ),
                         Icon(
-                          FontAwesomeIcons.angleRight,
-                          size: size.width * 0.07,
+                          FontAwesomeIcons.mapMarkedAlt,
+                          size: size.width * 0.15,
                         ),
                       ],
-                    )
-                  ],
+                    ),
+                  ),
                 ),
-              ),
-              GestureDetector(
-                onTap: () {},
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/stepCount');
+                  },
+                  child: Card(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(
-                          "BMI Calculator",
-                          style: TextStyle(fontSize: size.width * 0.05),
-                        ),
                         Icon(
-                          FontAwesomeIcons.angleRight,
-                          size: size.width * 0.07,
+                          FontAwesomeIcons.running,
+                          size: size.width * 0.15,
                         ),
                       ],
-                    )
-                  ],
+                    ),
+                  ),
                 ),
-              ),
-              GestureDetector(
-                onTap: () {},
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/bmi');
+                  },
+                  child: Card(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(
-                          "Timer",
-                          style: TextStyle(fontSize: size.width * 0.05),
-                        ),
                         Icon(
-                          FontAwesomeIcons.angleRight,
-                          size: size.width * 0.07,
+                          FontAwesomeIcons.weight,
+                          size: size.width * 0.15,
                         ),
                       ],
-                    )
-                  ],
+                    ),
+                  ),
                 ),
-              ),
-            ],
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/stepCount');
+                  },
+                  child: Card(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Icon(
+                          FontAwesomeIcons.chartBar,
+                          size: size.width * 0.15,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/calculateDistance');
+                  },
+                  child: Card(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Icon(
+                          FontAwesomeIcons.donate,
+                          size: size.width * 0.15,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/calculateDistance');
+                  },
+                  child: Card(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Icon(
+                          FontAwesomeIcons.dumbbell,
+                          size: size.width * 0.15,
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
-        Container(
-          height: size.height * 0.4,
-          width: size.width,
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  Text("Today's step count: "),
-                  Text("Your last BMI: ")
-                ],
-              ),
-              Row(
-                children: [
-                  Text("Maybe Sth"),
-                  Text("And...another thing?")
-                ],
-              )
-            ],
-          ),
-        )
       ],
     );
   }

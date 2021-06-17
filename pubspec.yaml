@@ -46,7 +46,7 @@ dependencies:
   dio: ^4.0.0
   flutter_polyline_points: ^1.0.0
   pedometer: ^3.0.0
-
+  circular_countdown_timer: ^0.2.0
 flutter_native_splash:
   color: "#74c494"
   #background_image: "assets/icons/nature.png"

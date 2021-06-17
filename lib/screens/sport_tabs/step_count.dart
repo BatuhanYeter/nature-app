@@ -68,7 +68,7 @@ class _StepCounterState extends State<StepCounter> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Pedometer example app'),
+          title: Text('Pedometer'),
         ),
         body: Center(
           child: Column(

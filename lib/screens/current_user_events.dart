@@ -15,8 +15,6 @@ class CurrentUserEvents extends StatelessWidget {
     final applicationBloc = Provider.of<ApplicationBloc>(context);
 
     final events = applicationBloc.events;
-    print("-----------" + events.length.toString());
-    print("-----------" + events[0].from.toString());
     return Scaffold(
       appBar: AppBar(
         leading: CloseButton(),
