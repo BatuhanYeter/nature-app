@@ -9,6 +9,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
 class PlacesService {
+  // I deleted all the keys on the credentials page of google api. 
   final key = 'AIzaSyBB6urxKy4DqowYs603axJM2g1joMVmhSY';
   FirebaseAuth auth = FirebaseAuth.instance;
 
